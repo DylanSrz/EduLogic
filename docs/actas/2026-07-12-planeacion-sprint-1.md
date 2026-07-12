@@ -5,22 +5,22 @@
 | Campo | Detalle |
 |---|---|
 | **Fecha** | 2026-07-12 |
-| **Hora inicio / fin** | 9:00 am — [completar] |
+| **Hora inicio / fin** | 9:00 am — 11:10 am |
 | **Tipo de reunión** | Planeación de Sprint (Sprint 1) |
 | **Modalidad** | Virtual (Discord) |
 | **Moderador** | Dylan Alberto Suarez Laverde |
-| **Encargado del acta** | [completar] |
+| **Encargado del acta** | Harold Ernesto Aristizabal Martinez |
 
 ## 👥 Asistencia
 
 | Integrante | Rol | Asistió |
 |---|---|---|
 | Dylan Alberto Suarez Laverde | Scrum Master / Backend | ✅ |
-| Harold Ernesto Aristizabal Marinez | Product Owner / Backend | [completar] |
-| Axel David Ruiz Poll | Frontend | [completar] |
-| Samuel Roncancio Bertel | Frontend | [completar] |
-| Mateo Hernandez Mendoza | Base de Datos | [completar] |
-| Yuranys Castro Ruiz | Base de Datos | [completar] |
+| Harold Ernesto Aristizabal Martinez | Product Owner / Backend | ✅ |
+| Axel David Ruiz Poll | Frontend | ✅ |
+| Samuel Roncancio Bertel | Frontend | ✅ |
+| Mateo Hernandez Mendoza | Base de Datos | ✅ |
+| Yuranys Castro Ruiz | Base de Datos | ✅ |
 
 ## 📌 Agenda propuesta
 
@@ -59,16 +59,16 @@ Se explicó el uso de Scrum con sprints de 1 semana, el tablero de GitHub Projec
 
 | Compromiso | Responsable | Issue relacionada | Fecha límite |
 |---|---|---|---|
-| Redactar historias de usuario del MVP | Dylan | #1 | [completar] |
+| Redactar historias de usuario del MVP | Dylan | #1 | 2026-07-12 |
 | Organizar Product Backlog y Sprint 1 | Dylan | #2 | 2026-07-12 |
-| Mockups en Figma | Samuel | #3 | [completar] |
-| Modelo de datos (diagrama ER en 3FN) | Yuranys | #4 | [completar] |
-| Arquitectura de la solución | Dylan y Harold | #5 | [completar] |
-| Proyecto Supabase y acceso del equipo | Yuranys y Mateo | #6 | [completar] |
-| Estructura base del repositorio | Axel | #7 | [completar] |
-| Esqueleto del documento técnico | Harold | #8 | [completar] |
-| Normas de Git y GitFlow | Harold | #9 | [completar] |
-| Ejercicio de Git: rama + nombre en README + PR (todos los integrantes) | Todo el equipo | #9 | [completar] |
+| Mockups en Figma | Samuel | #3 | 2026-07-12 |
+| Modelo de datos (diagrama ER en 3FN) | Yuranys | #4 | 2026-07-13 |
+| Arquitectura de la solución | Dylan y Harold | #5 | 2026-07-12 |
+| Proyecto Supabase y acceso del equipo | Yuranys y Mateo | #6 | 2026-07-12|
+| Estructura base del repositorio | Axel | #7 | 2026-07-12 |
+| Esqueleto del documento técnico | Harold | #8 | 2026-07-12 |
+| Normas de Git y GitFlow | Harold | #9 | 2026-07-12 |
+| Ejercicio de Git: rama + nombre en README + PR (todos los integrantes) | Todo el equipo | #9 | 2026-07-12 |
 
 ## 🚧 Impedimentos reportados
 
@@ -80,5 +80,5 @@ Se explicó el uso de Scrum con sprints de 1 semana, el tablero de GitHub Projec
 
 | Campo | Detalle |
 |---|---|
-| **Fecha y hora** | Daily: mañana 6:00 am. Revisión del Sprint 1: [completar] |
+| **Fecha y hora** | Daily: mañana 6:00 am. Revisión del Sprint 1 |
 | **Tema principal** | Seguimiento de las tareas de la Semana 1 |
