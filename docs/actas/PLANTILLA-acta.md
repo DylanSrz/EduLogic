@@ -24,12 +24,12 @@
 
 | Integrante | Rol | Asistió |
 |---|---|---|
-| Nombre 1 | Scrum Master / Backend | ✅ / ❌ |
-| Nombre 2 | Product Owner | ✅ / ❌ |
-| Nombre 3 | Backend | ✅ / ❌ |
-| Nombre 4 | Frontend | ✅ / ❌ |
-| Nombre 5 | Frontend | ✅ / ❌ |
-| Nombre 6 | Frontend / QA | ✅ / ❌ |
+| Dylan Alberto Suarez Laverde | Scrum Master / Backend | ✅ / ❌ |
+| Axel David Ruiz Poll | | ✅ / ❌ |
+| Harold Ernesto Aristizabal Marinez | | ✅ / ❌ |
+| Samuel Roncancio Bertel | | ✅ / ❌ |
+| Mateo Hernandez Mendoza | | ✅ / ❌ |
+| Yuranys Castro Ruiz | | ✅ / ❌ |
 
 > Si alguien faltó, indicar si avisó con anticipación y el motivo.
 
