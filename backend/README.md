@@ -60,6 +60,7 @@ El modo `dev` recarga el servidor automáticamente al guardar cambios. Verificar
 | URL | Qué debe verse |
 |---|---|
 | http://127.0.0.1:8000/health | `{"estado": "ok"}` — la API está viva |
+| http://127.0.0.1:8000/health/db | `{"base_de_datos": "conectada"}` — la conexión a PostgreSQL (Supabase) funciona. Si falla, revisar la `DATABASE_URL` del `.env` |
 | http://127.0.0.1:8000/docs | Documentación interactiva automática: aquí se prueban TODOS los endpoints |
 
 Para detener el servidor: `Ctrl+C`.
