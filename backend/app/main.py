@@ -1,7 +1,11 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-from app.database import get_db
+from app.database import get_db, engine, Base
+from app import models  # registra todos los modelos en la Base (necesario para create_all)
+
+# Crea en la base de datos las tablas que aún no existan (no toca las existentes)
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="EduLogic API")
 
