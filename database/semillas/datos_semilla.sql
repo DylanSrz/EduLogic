@@ -7,32 +7,32 @@ INSERT INTO usuarios
 VALUES
 ('Administrador General',
 'admin@edulogic.com',
-'$2b$12$HASH_ADMIN_PENDIENTE',
+'$2b$12$W24KA4mTpeN.z71u1bIjs.MefkNtkFN/ZOdiRtU4fZUXSMmS2DL1W',
 'admin'),
 
 ('Juan Pérez',
 'juan@edulogic.com',
-'$2b$12$HASH_PROFESOR1_PENDIENTE',
+'$2b$12$ngSGC3BlP23pFlWFZzIlCO0VPCM1mC.tt6u6XQqXUcXcZXxlIwED6',
 'profesor'),
 
 ('Laura Gómez',
 'laura@edulogic.com',
-'$2b$12$HASH_PROFESOR2_PENDIENTE',
+'$2b$12$l843d0NjUOyqi0vFnNFlFOTy4qaKpxh08r2DdPxq/f7JNrI/vhmAq',
 'profesor'),
 
 ('Carlos Rodríguez',
 'carlos@gmail.com',
-'$2b$12$HASH_ESTUDIANTE1_PENDIENTE',
+'$2b$12$MYqmMoxWTf3PjZRWTPAM..y0MMiudOGzQ6yKCex.s5hkJ3Zf3I.Wy',
 'estudiante'),
 
 ('Ana Martínez',
 'ana@gmail.com',
-'$2b$12$HASH_ESTUDIANTE2_PENDIENTE',
+'$2b$12$93bxJ.RW2SZuMZfGlycgiOwiyoeg233.jdthQCXKUw7KV5O98RDpC',
 'estudiante'),
 
 ('Luis Torres',
 'luis@gmail.com',
-'$2b$12$HASH_ESTUDIANTE3_PENDIENTE',
+'$2b$12$kAvN/ERS3p9jsCDr0G1vqewmBZbHvpyIwJdAPFO9yswGmxNqNgGpK',
 'estudiante');
 
 --------------------------------------------------------
@@ -522,7 +522,7 @@ VALUES
 (5,5,100.00),
 
 -- Luis
-(6,2,33.33),
+(6,2,0.00),
 (6,7,100.00);
 
 --------------------------------------------------------

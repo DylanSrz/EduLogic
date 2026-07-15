@@ -34,7 +34,7 @@ Si se requiere volver a poblar la base de datos:
 2. Abrir el **SQL Editor**.
 3. Copiar y ejecutar el contenido del archivo `database/semillas/datos_semilla.sql`.
 
-> **Nota:** Actualmente este paso no es necesario, ya que la base de datos del proyecto ya contiene los datos semilla.
+⚠️ Este script solo debe ejecutarse sobre una base de datos limpia (sin datos previos en las tablas). Los INSERT dependen de que los IDs autoincrementales comiencen en 1; sobre una base con datos, las referencias entre tablas quedarían apuntando a registros equivocados. Para reejecutarlo, primero limpiar las tablas en el orden indicado en la sección "Limpieza de datos".
 
 ## Resultado
 
