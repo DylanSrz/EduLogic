@@ -42,6 +42,24 @@ Si se requiere volver a poblar la base de datos:
 * No se presentan errores de claves foráneas.
 * La base de datos dispone de información suficiente para realizar pruebas, consultas y operaciones de manipulación.
 
+## Limpieza de datos
+
+Si es necesario eliminar los datos semilla, las tablas deben limpiarse en el orden inverso al de inserción para respetar las restricciones de claves foráneas.
+
+Orden recomendado:
+
+1. progreso
+2. respuestas_intento
+3. intentos
+4. opciones
+5. preguntas
+6. cuestionarios
+7. lecciones
+8. cursos
+9. usuarios
+
+La limpieza puede realizarse mediante sentencias `DELETE` o `TRUNCATE`, según las necesidades del entorno y las restricciones definidas en la base de datos.
+
 ## Issue relacionada
 
 Issue [#13](https://github.com/DylanSrz/EduLogic/issues/13)
