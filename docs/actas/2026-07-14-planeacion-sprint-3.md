@@ -4,7 +4,7 @@
 
 | Campo | Detalle |
 |---|---|
-| **Fecha** | 2026-07-12 |
+| **Fecha** | 2026-07-14 |
 | **Hora inicio / fin** | 10:00 am — 10:54 am |
 | **Tipo de reunión** | Planeación de Sprint (Sprint 3) |
 | **Modalidad** | Virtual (Discord) |
