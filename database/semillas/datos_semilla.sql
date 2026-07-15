@@ -2,37 +2,39 @@
 -- USUARIOS
 --------------------------------------------------------
 
+-- Datos semilla actualizados con hashes bcrypt generados para pruebas del entorno de desarrollo.
+
 INSERT INTO usuarios
 (nombre,email,contrasena_hash,rol)
 VALUES
 ('Administrador General',
 'admin@edulogic.com',
-'$2b$12$W24KA4mTpeN.z71u1bIjs.MefkNtkFN/ZOdiRtU4fZUXSMmS2DL1W',
+'$2b$12$rZvfZA2PBX4GJ6pP0HjaVu2CBF/VYR17My4RpJ8ehNso8sAHwYUB.',
 'admin'),
 
 ('Juan Pérez',
 'juan@edulogic.com',
-'$2b$12$ngSGC3BlP23pFlWFZzIlCO0VPCM1mC.tt6u6XQqXUcXcZXxlIwED6',
+'$2b$12$ZCzQjUXCkGlYQgOypEhXI.Q2es/rGQOwaCsK8MjrB1CrAQUFtLXyS',
 'profesor'),
 
 ('Laura Gómez',
 'laura@edulogic.com',
-'$2b$12$l843d0NjUOyqi0vFnNFlFOTy4qaKpxh08r2DdPxq/f7JNrI/vhmAq',
+'$2b$12$GEMCMGhGFKgU6db9GltwheNye3v.ygfzquBqiNCKP2uPcfBnXtiUe',
 'profesor'),
 
 ('Carlos Rodríguez',
 'carlos@gmail.com',
-'$2b$12$MYqmMoxWTf3PjZRWTPAM..y0MMiudOGzQ6yKCex.s5hkJ3Zf3I.Wy',
+'$2b$12$zgzi2q2IKS6ONRm17Khe4u4fp9/KX0ywcPFM3UlJ2fcIgXOSGdCXu',
 'estudiante'),
 
 ('Ana Martínez',
 'ana@gmail.com',
-'$2b$12$93bxJ.RW2SZuMZfGlycgiOwiyoeg233.jdthQCXKUw7KV5O98RDpC',
+'$2b$12$qkO.VjR3AIyv5yzhLu3Ct.JNnH.PVfvl3hLzMHCvvnPorugTTjOxO',
 'estudiante'),
 
 ('Luis Torres',
 'luis@gmail.com',
-'$2b$12$kAvN/ERS3p9jsCDr0G1vqewmBZbHvpyIwJdAPFO9yswGmxNqNgGpK',
+'$2b$12$yUF5FPFqabJsApXN3EQ5heRikKj0.VtYyzq4h4txbs4heKBbmRfIu',
 'estudiante');
 
 --------------------------------------------------------
