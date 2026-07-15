@@ -1,1 +1,3 @@
-console.log("EduLogic iniciado");
+import { probarApi } from "./test-api.js";
+
+probarApi();
