@@ -1,11 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-
 from app.database import get_db
 from app.models.curso import Curso, NivelCurso
 from app.models.usuario import Usuario
 from app.schemas.curso import CursoActualizar, CursoCrear, CursoRespuesta
-from app.services.dependencias import requiere_rol, usuario_actual
+from app.services.dependencias import requiere_rol
 
 router = APIRouter(prefix="/cursos", tags=["Cursos"])
 
