@@ -44,4 +44,4 @@ Si se requiere volver a poblar la base de datos:
 
 ## Issue relacionada
 
-Closes [#13](https://github.com/DylanSrz/EduLogic/issues/13)
+Issue [#13](https://github.com/DylanSrz/EduLogic/issues/13)
