@@ -1,3 +1,5 @@
+import { probarApi } from "./test-api.js";
+
 import { registrarRuta, navegar } from "./router.js";
 import { vistaInicio } from "./vistas/inicio.js";
 import { vistaLogin } from "./vistas/login.js";
@@ -10,4 +12,7 @@ registrarRuta("/cursos", vistaCursos);
 registrarRuta("/cursos/:id", vistaDetalleCurso);
 
 window.addEventListener("hashchange", navegar);
-window.addEventListener("DOMContentLoaded", navegar);
+window.addEventListener("DOMContentLoaded", () => {
+    probarApi(); // Temporal para validar la API
+    navegar();
+});
