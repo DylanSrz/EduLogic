@@ -1,4 +1,5 @@
 import { vista404 } from "./vistas/noEncontrada.js";
+import { verificarAcceso, vistaSinPermisos } from "./sesion.js";
 
 const rutas = {};
 
@@ -40,6 +41,19 @@ export function navegar() {
     const app = document.getElementById("app");
 
     if (!app) return;
+
+    const acceso = verificarAcceso(hash);
+
+    if (!acceso.permitido) {
+        if (acceso.sinPermisos) {
+            vistaSinPermisos(app);
+            return;
+        }
+        if (acceso.redirect) {
+            window.location.hash = `#${acceso.redirect}`;
+            return;
+        }
+    }
 
     const coincidencia = coincidirRuta(hash);
 
