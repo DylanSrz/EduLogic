@@ -1,4 +1,5 @@
-import { apiPost, guardarToken, guardarUsuario, obtenerRol, navegarA, obtenerMensajeFlash, actualizarHeader } from "../api.js";
+import { apiPost, guardarToken } from "../api.js";
+import { guardarUsuario, navegarA, obtenerMensajeFlash, actualizarHeader } from "../sesion.js";
 
 function validarEmail(email) {
     if (!email.trim()) return "El correo electronico es obligatorio.";
@@ -183,14 +184,9 @@ export function vistaLogin(app) {
 
             actualizarHeader();
 
-            const rol = respuesta.usuario.rol;
-            if (rol === "admin") {
-                navegarA("/panel-admin");
-            } else if (rol === "profesor") {
-                navegarA("/panel-profesor");
-            } else {
-                navegarA("/cursos");
-            }
+            // Los paneles de profesor (#32) y admin (#33) aun no existen:
+            // por ahora todos los roles aterrizan en el catalogo.
+            navegarA("/cursos");
         } catch (err) {
             mostrarErrorGeneral(formulario, err.message || "Error al iniciar sesion. Intenta de nuevo.");
             btnSubmit.disabled = false;

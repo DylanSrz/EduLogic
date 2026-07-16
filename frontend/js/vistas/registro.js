@@ -1,4 +1,5 @@
-import { apiPost, navegarA, obtenerMensajeFlash } from "../api.js";
+import { apiPost } from "../api.js";
+import { navegarA, obtenerMensajeFlash } from "../sesion.js";
 
 function validarNombre(nombre) {
     if (!nombre.trim()) return "El nombre es obligatorio.";
