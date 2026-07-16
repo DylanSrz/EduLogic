@@ -15,12 +15,12 @@ EduLogic premia la practica — repetir un quiz es estudiar, no hacer trampa,
 porque el orden de aprendizaje lo pone la explicacion pedagogica.
 """
 
-from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.models.cuestionario import Cuestionario
 from app.models.intento import Intento, RespuestaIntento
 from app.models.usuario import Usuario
+from app.services.excepciones import RecursoNoEncontrado, ReglaDeNegocioViolada
 from app.schemas.intento import (
     RespuestaCrear,
     RetroalimentacionPregunta,
@@ -41,17 +41,11 @@ def calificar_intento(
     # ------------------------------------------------------------------
     cuestionario = db.get(Cuestionario, cuestionario_id)
     if not cuestionario:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Cuestionario no encontrado.",
-        )
+        raise RecursoNoEncontrado("Cuestionario no encontrado.")
 
     preguntas = cuestionario.preguntas
     if not preguntas:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Este cuestionario aún no tiene preguntas.",
-        )
+        raise ReglaDeNegocioViolada("Este cuestionario aún no tiene preguntas.")
 
     # ------------------------------------------------------------------
     # 2. Validar el intento: una respuesta por CADA pregunta del
@@ -61,25 +55,20 @@ def calificar_intento(
     elegidas = {r.pregunta_id: r.opcion_id for r in respuestas}
 
     if len(elegidas) != len(respuestas):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Hay preguntas respondidas más de una vez.",
-        )
+        raise ReglaDeNegocioViolada("Hay preguntas respondidas más de una vez.")
 
     ids_preguntas = {p.id for p in preguntas}
 
     faltantes = ids_preguntas - set(elegidas)
     if faltantes:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Faltan respuestas para {len(faltantes)} pregunta(s) del cuestionario.",
+        raise ReglaDeNegocioViolada(
+            f"Faltan respuestas para {len(faltantes)} pregunta(s) del cuestionario."
         )
 
     ajenas = set(elegidas) - ids_preguntas
     if ajenas:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="El intento incluye preguntas que no pertenecen a este cuestionario.",
+        raise ReglaDeNegocioViolada(
+            "El intento incluye preguntas que no pertenecen a este cuestionario."
         )
 
     # ------------------------------------------------------------------
@@ -95,9 +84,8 @@ def calificar_intento(
         if opcion_elegida is None:
             # La opcion enviada existe pero pertenece a OTRA pregunta:
             # sin este chequeo se podria "responder" con una correcta ajena.
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"La opción enviada no pertenece a la pregunta {pregunta.id}.",
+            raise ReglaDeNegocioViolada(
+                f"La opción enviada no pertenece a la pregunta {pregunta.id}."
             )
 
         # Los modelos garantizan exactamente UNA correcta por pregunta
