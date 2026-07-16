@@ -7,6 +7,7 @@ from app import models  # registra todos los modelos en la Base (necesario para 
 from app.routers.auth import router as auth_router
 from app.routers.cursos import router as cursos_router
 from app.routers.cuestionarios import router as cuestionarios_router
+from app.routers.lecciones import router as lecciones_router
 
 # Crea en la base de datos las tablas que aún no existan (no toca las existentes)
 Base.metadata.create_all(bind=engine)
@@ -28,6 +29,7 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(cursos_router)
 app.include_router(cuestionarios_router)
+app.include_router(lecciones_router)
 
 
 @app.get("/health")
