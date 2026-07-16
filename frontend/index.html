@@ -7,23 +7,25 @@
 
     <link rel="stylesheet" href="./css/estilos.css">
 </head>
-<body>
+<body class="min-h-screen flex flex-col bg-gray-50">
 
-    <header>
-        <h1>EduLogic</h1>
-
-        <nav>
-            <a href="#/">Inicio</a>
-            <a href="#/cursos">Cursos</a>
-            <a href="#/login">Login</a>
-        </nav>
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-blue-600">EduLogic</h1>
+            <nav class="flex items-center gap-4 text-sm">
+                <a href="#/" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors">Inicio</a>
+                <a href="#/cursos" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors">Cursos</a>
+                <a href="#/login" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Iniciar sesión</a>
+                <a href="#/registro" class="text-blue-600 hover:underline px-3 py-2">Regístrate</a>
+            </nav>
+        </div>
     </header>
 
-    <main id="app">
+    <main id="app" class="flex-1">
     </main>
 
-    <footer>
-        <p>© 2026 EduLogic</p>
+    <footer class="bg-white border-t border-gray-200 py-4">
+        <p class="text-center text-gray-500 text-sm">© 2026 EduLogic</p>
     </footer>
 
     <script type="module" src="./js/app.js"></script>
