@@ -1,5 +1,5 @@
 import { apiPost, guardarToken } from "../api.js";
-import { guardarUsuario, navegarA, obtenerMensajeFlash, actualizarHeader } from "../sesion.js";
+import { guardarUsuario, navegarA, obtenerMensajeFlash, obtenerRutaDestino, actualizarHeader } from "../sesion.js";
 
 function validarEmail(email) {
     if (!email.trim()) return "El correo electronico es obligatorio.";
@@ -64,7 +64,7 @@ export function vistaLogin(app) {
     app.innerHTML = "";
 
     const contenedor = document.createElement("div");
-    contenedor.className = "min-h-screen bg-gray-50 flex items-center justify-center p-8";
+    contenedor.className = "h-full bg-gray-50 flex items-center justify-center p-8";
 
     contenedor.innerHTML = `
         <div class="w-full max-w-md bg-white rounded-xl shadow-md p-8">
@@ -184,9 +184,8 @@ export function vistaLogin(app) {
 
             actualizarHeader();
 
-            // Los paneles de profesor (#32) y admin (#33) aun no existen:
-            // por ahora todos los roles aterrizan en el catalogo.
-            navegarA("/cursos");
+            const destino = obtenerRutaDestino() || "/cursos";
+            navegarA(destino);
         } catch (err) {
             mostrarErrorGeneral(formulario, err.message || "Error al iniciar sesion. Intenta de nuevo.");
             btnSubmit.disabled = false;

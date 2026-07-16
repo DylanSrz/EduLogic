@@ -22,6 +22,7 @@ app.add_middleware(
     allow_origins=[
         "http://127.0.0.1:5500",  # Live Server
         "http://localhost:5500",  # mismo Live Server, pero es OTRO origen para el navegador
+        "http://localhost:8080"
     ],
     allow_methods=["*"],
     allow_headers=["*"],
