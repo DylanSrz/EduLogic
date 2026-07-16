@@ -62,11 +62,11 @@ Este es nuestro **Proyecto Integrador** de Riwi. Dura **5 semanas** y al final s
 | Integrante | Rol |
 |---|---|
 | Dylan Alberto Suarez Laverde | Scrum Master / Líder + Backend Developer |
-| Axel David Ruiz Poll | Por definir en la reunión de planeación |
-| Harold Ernesto Aristizabal Marinez | Por definir en la reunión de planeación |
-| Samuel Roncancio Bertel | Por definir en la reunión de planeación |
-| Mateo Hernandez Mendoza | Por definir en la reunión de planeación |
-| Yuranys Castro Ruiz | Por definir en la reunión de planeación |
+| Harold Ernesto Aristizabal Marinez | Product Owner + Backend Developer |
+| Axel David Ruiz Poll | Frontend Developer |
+| Samuel Roncancio Bertel | Frontend Developer |
+| Mateo Hernandez Mendoza | Base de Datos |
+| Yuranys Castro Ruiz | Base de Datos |
 
 Qué hace cada rol:
 
@@ -114,7 +114,7 @@ Usamos **Scrum** (obligatorio en el proyecto). Lo esencial:
 - **Product Backlog**: la lista priorizada de TODO el trabajo. Ya existe: son las **issues** del repositorio (44), cada una superdetallada con contexto, pasos y criterios de aceptación. **Lee tu issue completa antes de empezarla.**
 - **Sprint**: período corto (1 semana para nosotros) con un compromiso claro de qué se entrega.
 - **Tablero**: [GitHub Projects — EduLogic](https://github.com/users/DylanSrz/projects/6). Columnas: `Todo` → `In Progress` → `Done`. **Cada quien mueve sus propias tarjetas.**
-- **Daily**: reunión corta (máx. 15 min) para sincronizar: qué hice, qué haré, qué me bloquea.
+- **Daily**: reunión corta (máx. 15 min) para sincronizar: qué hice, qué haré, qué me bloquea. **Horario acordado por el equipo: 6:00 am por Discord.**
 - **Actas**: toda reunión genera un acta usando la plantilla `docs/actas/PLANTILLA-acta.md` (es evidencia obligatoria del proyecto).
 - **Impedimentos**: ¿algo no te deja avanzar más de unas horas? Repórtalo al Scrum Master — pedir ayuda a tiempo es profesionalismo, no debilidad.
 

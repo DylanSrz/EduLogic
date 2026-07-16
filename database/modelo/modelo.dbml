@@ -1,0 +1,122 @@
+// ---------- Enumeraciones ----------
+
+enum rol_usuario {
+  estudiante
+  profesor
+  admin
+}
+
+enum nivel_curso {
+  basico
+  intermedio
+  avanzado
+}
+
+// ---------- Usuarios y roles ----------
+
+Table usuarios {
+  id int [pk, increment]
+  nombre varchar(100) [not null]
+  email varchar(150) [not null, unique, note: 'Identidad para el login']
+  contrasena_hash varchar(255) [not null, note: 'Hash bcrypt, NUNCA texto plano']
+  rol rol_usuario [not null, default: 'estudiante']
+  activo boolean [not null, default: true, note: 'Borrado lógico: false = no puede iniciar sesión']
+  fecha_registro timestamp [not null, default: `now()`]
+}
+
+// ---------- Contenido de aprendizaje ----------
+
+Table cursos {
+  id int [pk, increment]
+  titulo varchar(200) [not null]
+  descripcion text
+  nivel nivel_curso [not null, default: 'basico']
+  creador_id int [not null, note: 'Profesor o admin que creó el curso']
+  fecha_creacion timestamp [not null, default: `now()`]
+}
+
+Table lecciones {
+  id int [pk, increment]
+  curso_id int [not null]
+  titulo varchar(200) [not null]
+  contenido text [not null, note: 'El material de estudio de la lección']
+  orden int [not null, note: 'Posición dentro del curso (1, 2, 3...)']
+
+  indexes {
+    (curso_id, orden) [unique, note: 'No puede haber dos lecciones con el mismo orden en un curso']
+  }
+}
+
+// ---------- Evaluación ----------
+
+Table cuestionarios {
+  id int [pk, increment]
+  leccion_id int [not null, unique, note: 'Única → un cuestionario por lección (1 a 1)']
+  titulo varchar(200) [not null]
+}
+
+Table preguntas {
+  id int [pk, increment]
+  cuestionario_id int [not null]
+  enunciado text [not null]
+  explicacion text [not null, note: 'Retroalimentación pedagógica que ve el estudiante al fallar']
+}
+
+Table opciones {
+  id int [pk, increment]
+  pregunta_id int [not null]
+  texto varchar(500) [not null]
+  es_correcta boolean [not null, default: false, note: 'Exactamente UNA opción correcta por pregunta (regla validada por el backend)']
+}
+
+// ---------- Actividad del estudiante ----------
+
+Table intentos {
+  id int [pk, increment]
+  usuario_id int [not null]
+  cuestionario_id int [not null]
+  puntaje decimal(5,2) [not null, note: '0.00 a 100.00']
+  fecha timestamp [not null, default: `now()`]
+}
+
+Table respuestas_intento {
+  id int [pk, increment]
+  intento_id int [not null]
+  pregunta_id int [not null]
+  opcion_elegida_id int [not null]
+
+  indexes {
+    (intento_id, pregunta_id) [unique, note: 'Una sola respuesta por pregunta en cada intento']
+  }
+}
+
+Table progreso {
+  id int [pk, increment]
+  usuario_id int [not null]
+  leccion_id int [not null]
+  completada boolean [not null, default: true]
+  fecha timestamp [not null, default: `now()`]
+
+  indexes {
+    (usuario_id, leccion_id) [unique, note: 'Un registro por usuario y lección (idempotente)']
+  }
+}
+
+// ---------- Relaciones ----------
+// Sintaxis: tabla_hija.fk > tabla_padre.pk  (muchos a uno)
+
+// Contenido: si se borra el padre, cae su contenido (cascada)
+Ref: cursos.creador_id > usuarios.id
+Ref: lecciones.curso_id > cursos.id [delete: cascade]
+Ref: cuestionarios.leccion_id > lecciones.id [delete: cascade]
+Ref: preguntas.cuestionario_id > cuestionarios.id [delete: cascade]
+Ref: opciones.pregunta_id > preguntas.id [delete: cascade]
+
+// Actividad del estudiante
+Ref: intentos.usuario_id > usuarios.id [delete: cascade]
+Ref: intentos.cuestionario_id > cuestionarios.id [delete: cascade]
+Ref: respuestas_intento.intento_id > intentos.id [delete: cascade]
+Ref: respuestas_intento.pregunta_id > preguntas.id [delete: cascade]
+Ref: respuestas_intento.opcion_elegida_id > opciones.id [delete: cascade]
+Ref: progreso.usuario_id > usuarios.id [delete: cascade]
+Ref: progreso.leccion_id > lecciones.id [delete: cascade]

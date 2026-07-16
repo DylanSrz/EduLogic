@@ -25,11 +25,11 @@
 | Integrante | Rol | Asistió |
 |---|---|---|
 | Dylan Alberto Suarez Laverde | Scrum Master / Backend | ✅ / ❌ |
-| Axel David Ruiz Poll | | ✅ / ❌ |
-| Harold Ernesto Aristizabal Marinez | | ✅ / ❌ |
-| Samuel Roncancio Bertel | | ✅ / ❌ |
-| Mateo Hernandez Mendoza | | ✅ / ❌ |
-| Yuranys Castro Ruiz | | ✅ / ❌ |
+| Harold Ernesto Aristizabal Marinez | Product Owner / Backend | ✅ / ❌ |
+| Axel David Ruiz Poll | Frontend | ✅ / ❌ |
+| Samuel Roncancio Bertel | Frontend | ✅ / ❌ |
+| Mateo Hernandez Mendoza | Base de Datos | ✅ / ❌ |
+| Yuranys Castro Ruiz | Base de Datos | ✅ / ❌ |
 
 > Si alguien faltó, indicar si avisó con anticipación y el motivo.
 
