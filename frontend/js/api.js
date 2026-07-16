@@ -34,7 +34,7 @@ export async function pedirApi(ruta, opciones = {}) {
                 : undefined
         });
 
-        if (respuesta.status === 401) {
+        if (respuesta.status === 401 && obtenerToken()) {
             borrarToken();
             window.location.hash = "#/login";
             throw new Error("La sesión ha expirado.");
@@ -45,9 +45,13 @@ export async function pedirApi(ruta, opciones = {}) {
             const error = await respuesta.json();
 
             throw new Error(
-                error.message || "Ocurrió un error en la petición."
+                error.detail || "Ocurrió un error en la petición."
             );
 
+        }
+
+        if (respuesta.status === 204) {
+            return null;
         }
 
         return await respuesta.json();

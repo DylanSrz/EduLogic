@@ -7,10 +7,13 @@ export async function probarApi() {
     try {
 
         const datos = await apiGet("/health");
+        const cursos = await apiGet("/cursos");
 
         app.innerHTML = `
             <h2>Prueba API</h2>
             <pre>${JSON.stringify(datos, null, 2)}</pre>
+            <h2>Cursos</h2>
+            <pre>${JSON.stringify(cursos, null, 2)}</pre>
         `;
 
     } catch (error) {
