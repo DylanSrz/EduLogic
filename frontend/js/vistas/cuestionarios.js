@@ -1,9 +1,31 @@
 import { apiGet, apiPost } from "../api.js";
 import { escapeHTML } from "../ui.js";
-import { navegarA } from "../sesion.js";
+import { rolActual } from "../sesion.js";
 
 export async function vistaCuestionario(app, { id }) {
     app.innerHTML = "";
+
+    // Solo los estudiantes presentan cuestionarios (CP-22): profesores y
+    // admins crean y supervisan. El motor igual respondería 403 al enviar —
+    // esto evita que lleguen hasta alla. La sesion ya la garantiza el router.
+    if (rolActual() !== "estudiante") {
+        const aviso = document.createElement("div");
+        aviso.className = "max-w-3xl mx-auto px-4 py-16 text-center";
+        aviso.innerHTML = `
+            <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center">
+                <svg class="w-12 h-12 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Los cuestionarios los presentan los estudiantes</h3>
+            <p class="text-gray-500 mb-8 max-w-md mx-auto">Tu rol crea y supervisa el contenido. Para editar este cuestionario, usa el panel del profesor.</p>
+            <a href="#/panel-profesor" class="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-all font-medium">
+                Ir al panel del profesor
+            </a>
+        `;
+        app.appendChild(aviso);
+        return;
+    }
 
     if (!document.getElementById("cuestionario-estilos")) {
         const s = document.createElement("style");
@@ -417,7 +439,15 @@ function renderizarFaseResultados(container, estado, resultado) {
 
     const btn = container.querySelector(".btn-reintentar");
     if (btn) {
-        btn.addEventListener("click", () => navegarA("#/cuestionarios/" + estado.cuestionario.id));
+        // No se navega: asignar el mismo hash no dispara hashchange y la vista
+        // no se re-renderizaria. Se reinicia el estado y se vuelve a la fase
+        // de respuesta (el cuestionario ya esta cargado en memoria).
+        btn.addEventListener("click", () => {
+            estado.respuestas = {};
+            estado.preguntaActual = 0;
+            estado.enviando = false;
+            renderizarFaseRespuesta(container, estado);
+        });
     }
 }
 
