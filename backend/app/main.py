@@ -13,6 +13,7 @@ from app.routers.cursos import router as cursos_router
 from app.routers.cuestionarios import router as cuestionarios_router
 from app.routers.intentos import router as intentos_router
 from app.routers.lecciones import router as lecciones_router
+from app.routers.progreso import router as progreso_router
 from app.services.excepciones import ErrorDeDominio
 
 # El log del servidor: aqui SI queda el detalle real de los errores internos
@@ -45,6 +46,7 @@ app.include_router(cursos_router)
 app.include_router(cuestionarios_router)
 app.include_router(intentos_router)
 app.include_router(lecciones_router)
+app.include_router(progreso_router)
 
 
 # ---------------------------------------------------------------------------
