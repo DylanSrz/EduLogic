@@ -6,7 +6,7 @@
 |---|---|
 | **Fecha** | 2026-07-16 |
 | **Hora inicio / fin** | 09:00 am — 09:50 am |
-| **Tipo de reunión** | Planeación de Sprint (Sprint 4) |
+| **Tipo de reunión** | Planeación de Sprint (Sprint 5) |
 | **Modalidad** | Virtual (Discord) |
 | **Moderador** | Dylan Alberto Suarez Laverde |
 | **Encargado del acta** | Harold Ernesto Aristizabal Martinez |
@@ -20,7 +20,7 @@
 | Axel David Ruiz Poll | Frontend | ✅ |
 | Samuel Roncancio Bertel | Frontend | ❌ |
 | Mateo Hernandez Mendoza | Base de Datos | ✅ |
-| Yuranys Castro Ruiz | Base de Datos | ✅ |
+| Yuranys Castro Ruiz | Base de Datos | ❌ |
 
 ## 📌 Agenda desarrollada
 
