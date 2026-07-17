@@ -42,12 +42,17 @@ function coincideRol(segHash) {
     return null;
 }
 
+function leerPayload(token) {
+    const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(atob(base64));
+}
+
 export function haySesion() {
     const token = obtenerToken();
     if (!token) return false;
 
     try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
+        const payload = leerPayload(token);
         const ahora = Math.floor(Date.now() / 1000);
         if (payload.exp && payload.exp < ahora) {
             borrarToken();
@@ -65,8 +70,7 @@ export function haySesion() {
 export function rolActual() {
     if (!haySesion()) return null;
     try {
-        const token = obtenerToken();
-        const payload = JSON.parse(atob(token.split(".")[1]));
+        const payload = leerPayload(obtenerToken());
         return payload.rol || null;
     } catch {
         return null;
