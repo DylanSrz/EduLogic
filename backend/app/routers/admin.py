@@ -4,7 +4,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.database import get_db                              # ← Importación de la sesión de BD
+from app.models.curso import Curso                           # ← Modelo de curso
 from app.models.usuario import Usuario, RolUsuario           # ← Modelo de usuario y enum de roles
+from app.schemas.curso import CursoAdminRespuesta            # ← Schema para cursos en admin
 from app.schemas.usuario import (                            # ← Schemas de respuesta/petición
     CambioRol,                                               #   (agregados en Issue #21)
     PaginaUsuarios,
@@ -233,3 +235,33 @@ def reactivar_usuario(
     db.refresh(usuario)
 
     return usuario
+
+
+# ---------------------------------------------------------------------------
+# GET /admin/cursos  —  Lista todos los cursos con el nombre del creador.
+#
+# El endpoint publico GET /cursos solo devuelve creador_id (el numero).
+# Para el panel de administracion, el admin necesita ver QUIEN creo cada
+# curso sin tener que hacer N+1 consultas. Este endpoint hace el JOIN
+# una sola vez y devuelve creador_nombre junto al resto de campos.
+# ---------------------------------------------------------------------------
+
+@router.get("/cursos", response_model=list[CursoAdminRespuesta])
+def listar_cursos_admin(
+    db: Session = Depends(get_db),
+    _admin: Usuario = Depends(requiere_rol("admin")),
+):
+    """Lista todos los cursos con el nombre del usuario que los creo."""
+    cursos = db.query(Curso).order_by(Curso.fecha_creacion.desc()).all()
+    return [
+        CursoAdminRespuesta(
+            id=c.id,
+            titulo=c.titulo,
+            descripcion=c.descripcion,
+            nivel=c.nivel.value if hasattr(c.nivel, "value") else c.nivel,
+            creador_id=c.creador_id,
+            creador_nombre=c.creador.nombre if c.creador else "Desconocido",
+            fecha_creacion=c.fecha_creacion,
+        )
+        for c in cursos
+    ]

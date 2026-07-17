@@ -31,3 +31,16 @@ class CursoRespuesta(BaseModel):
     fecha_creacion: datetime
 
     model_config = {"from_attributes": True}
+
+
+class CursoAdminRespuesta(BaseModel):
+    """Representacion de un curso para el panel de administracion.
+    Incluye el nombre del creador ademas de los campos publicos."""
+
+    id: int
+    titulo: str
+    descripcion: Optional[str]
+    nivel: str
+    creador_id: int
+    creador_nombre: str
+    fecha_creacion: datetime
