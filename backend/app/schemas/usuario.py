@@ -29,6 +29,7 @@ class TokenRespuesta(BaseModel):
     token_type: str = "bearer"
     usuario: UsuarioRespuesta
 
+
 class UsuarioDetalleAdmin(BaseModel):
     """Respuesta detallada de un usuario para el panel de administración.
     Incluye el campo 'activo' y 'fecha_registro' que no se exponen en la
@@ -56,4 +57,4 @@ class PaginaUsuarios(BaseModel):
     total: int                            # ← Total de usuarios que coinciden con el filtro
     pagina: int                           # ← Página actual solicitada
     tamanio: int                          # ← Cantidad de usuarios por página
-    total_paginas: int  
+    total_paginas: int                    # ← Total de páginas disponibles

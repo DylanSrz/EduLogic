@@ -193,3 +193,43 @@ def desactivar_usuario(
     db.refresh(usuario)
 
     return usuario
+
+
+# ---------------------------------------------------------------------------
+# PUT /admin/usuarios/{id}/activar  —  Reactiva un usuario desactivado.
+#
+# Es la otra mitad del borrado lógico: la razón de elegirlo fue la
+# REVERSIBILIDAD (si el admin desactiva por error, puede volver atrás sin
+# perder datos). Este endpoint materializa esa promesa. Lo usan el caso de
+# prueba CP-33 y el botón "Reactivar" del panel del administrador (#33).
+# ---------------------------------------------------------------------------
+
+@router.put("/usuarios/{usuario_id}/activar", response_model=UsuarioDetalleAdmin)
+def reactivar_usuario(
+    usuario_id: int,
+    db: Session = Depends(get_db),
+    _admin: Usuario = Depends(requiere_rol("admin")),  # ← Solo admin puede acceder; otros roles → 403
+):
+    """Reactiva una cuenta desactivada: el usuario vuelve a poder iniciar
+    sesión y recupera el acceso a todo su historial intacto."""
+    # ── Buscar el usuario objetivo ──
+    usuario = db.get(Usuario, usuario_id)
+    if not usuario:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuario no encontrado.",
+        )
+
+    # ── Verificar si ya está activo ──
+    if usuario.activo:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El usuario ya está activo.",
+        )
+
+    # ── Reactivar la cuenta ──
+    usuario.activo = True                                 # ← Vuelve a poder iniciar sesión; su historial quedó intacto
+    db.commit()
+    db.refresh(usuario)
+
+    return usuario
