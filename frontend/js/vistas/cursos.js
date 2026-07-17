@@ -1,4 +1,5 @@
 import { apiGet } from "../api.js";
+import { escapeHTML } from "../ui.js";
 
 export async function vistaCursos(app) {
     app.innerHTML = "";
@@ -267,12 +268,6 @@ function colorNivelBorde(nivel) {
 
 function capitalizar(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
-function escapeHTML(str) {
-    const div = document.createElement("div");
-    div.textContent = str;
-    return div.innerHTML;
 }
 
 if (!document.getElementById("cursos-estilos")) {

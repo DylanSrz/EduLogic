@@ -1,11 +1,11 @@
 import { apiGet, apiPost, apiPut, apiDelete } from "../api.js";
+import { escapeHTML } from "../ui.js";
 
 const estado = {
     vista: "cursos",
     curso: null,
     cursos: [],
     lecciones: [],
-    _cuestionariosCache: {},
 };
 
 const NIVELES = ["basico", "intermedio", "avanzado"];
@@ -16,6 +16,11 @@ const COLORES_NIVEL = {
 };
 
 let appOut = null;
+
+function capitalizar(texto) {
+    if (!texto) return "";
+    return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
 
 function toast(mensaje, tipo = "exito") {
     const existente = document.querySelector(".toast-notification");
@@ -195,13 +200,23 @@ function sidebarHTML() {
                 <div class="flex items-center gap-3 px-3 py-2">
                     <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-sm font-semibold" id="sidebar-inicial"></div>
                     <div class="text-sm" id="sidebar-info">
-                        <div class="font-medium text-gray-900">Profesor</div>
-                        <div class="text-gray-400 text-xs">profesor@email.com</div>
+                        <div class="font-medium text-gray-900" id="sidebar-nombre">Profesor</div>
+                        <div class="text-gray-400 text-xs" id="sidebar-email"></div>
                     </div>
                 </div>
             </div>
         </aside>
     `;
+}
+
+function leerPayload() {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    try {
+        return JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+    } catch {
+        return null;
+    }
 }
 
 /* ------------------------------------------------------------------ */
@@ -220,18 +235,15 @@ async function render() {
     appOut.innerHTML = "";
     appOut.appendChild(wrapper);
 
-    const token = localStorage.getItem("token");
-    if (token) {
-        const payload = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
+    const payload = leerPayload();
+    if (payload) {
+        // textContent (no innerHTML) porque nombre y email los escribió el usuario
         const ini = wrapper.querySelector("#sidebar-inicial");
-        const info = wrapper.querySelector("#sidebar-info");
+        const nombre = wrapper.querySelector("#sidebar-nombre");
+        const email = wrapper.querySelector("#sidebar-email");
         if (ini) ini.textContent = (payload.nombre || payload.email || "P")[0].toUpperCase();
-        if (info) {
-            info.innerHTML = `
-                <div class="font-medium text-gray-900">${payload.nombre || "Profesor"}</div>
-                <div class="text-gray-400 text-xs">${payload.email || ""}</div>
-            `;
-        }
+        if (nombre) nombre.textContent = payload.nombre || "Profesor";
+        if (email) email.textContent = payload.email || "";
     }
 
     wrapper.querySelectorAll(".nav-link").forEach(el => {
@@ -258,10 +270,11 @@ async function render() {
             <div class="text-center py-16">
                 <div class="text-red-500 text-5xl mb-4">!</div>
                 <h3 class="text-xl font-semibold text-gray-700 mb-2">Error al cargar datos</h3>
-                <p class="text-gray-500 mb-6">${e.message}</p>
+                <p class="text-gray-500 mb-6" id="error-msg"></p>
                 <button id="btn-retry" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">Reintentar</button>
             </div>
         `;
+        cont.querySelector("#error-msg").textContent = e.message;
         cont.querySelector("#btn-retry")?.addEventListener("click", render);
     }
 }
@@ -286,13 +299,9 @@ async function renderCursos(cont) {
     `;
     cont.querySelector("#btn-nuevo-curso").addEventListener("click", () => mostrarFormCurso());
 
-    const token = localStorage.getItem("token");
-    let userId = null, userRole = null;
-    if (token) {
-        const payload = JSON.parse(atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")));
-        userId = parseInt(payload.sub);
-        userRole = payload.rol;
-    }
+    const payload = leerPayload();
+    const userId = payload ? parseInt(payload.sub) : null;
+    const userRole = payload ? payload.rol : null;
 
     const grid = document.createElement("div");
     grid.className = "grid md:grid-cols-2 lg:grid-cols-3 gap-6";
@@ -310,9 +319,9 @@ async function renderCursos(cont) {
             const card = document.createElement("div");
             card.className = "bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all flex flex-col";
             card.innerHTML = `
-                <span class="inline-block ${colores.bg} ${colores.text} text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">${curso.nivel.charAt(0).toUpperCase() + curso.nivel.slice(1)}</span>
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">${curso.titulo}</h3>
-                <p class="text-gray-500 text-sm mb-4 flex-1">${curso.descripcion || "Sin descripción."}</p>
+                <span class="inline-block ${colores.bg} ${colores.text} text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">${escapeHTML(capitalizar(curso.nivel))}</span>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">${escapeHTML(curso.titulo)}</h3>
+                <p class="text-gray-500 text-sm mb-4 flex-1">${escapeHTML(curso.descripcion || "Sin descripción.")}</p>
                 <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t">
                     <button class="btn-constructor flex-1 bg-blue-600 text-white text-sm px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">Construir</button>
                     <button class="btn-editar bg-gray-100 text-gray-700 text-sm px-3 py-2 rounded-lg hover:bg-gray-200 transition-colors cursor-pointer">Editar</button>
@@ -351,7 +360,7 @@ function mostrarFormCurso(cursoExistente = null) {
     NIVELES.forEach(n => {
         const opt = document.createElement("option");
         opt.value = n;
-        opt.textContent = n.charAt(0).toUpperCase() + n.slice(1);
+        opt.textContent = capitalizar(n);
         if (cursoExistente?.nivel === n) opt.selected = true;
         nivel.input.appendChild(opt);
     });
@@ -376,71 +385,32 @@ function mostrarFormCurso(cursoExistente = null) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  VISTA: CONSTRUCTOR DEL CURSO (MOCKUP FUNCIONAL)                   */
+/*  VISTA: CONSTRUCTOR DEL CURSO                                       */
 /* ------------------------------------------------------------------ */
 async function renderConstructor(cont) {
     const curso = estado.curso;
     estado.lecciones = await apiGet(`/cursos/${curso.id}/lecciones`);
-    estado._cuestionariosCache = {};
-
     const totalLecciones = estado.lecciones.length;
-    const duracionEstimada = totalLecciones * 25;
 
     cont.innerHTML = `
         <div class="text-sm text-gray-400 mb-6">
             <span class="hover:text-gray-600 transition-colors cursor-pointer breadcrumb-cursos">Mis Cursos</span>
             <span class="mx-2">/</span>
-            <span class="text-gray-600 font-medium">${curso.titulo}</span>
+            <span class="text-gray-600 font-medium">${escapeHTML(curso.titulo)}</span>
         </div>
 
         <div class="flex items-start justify-between mb-8">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">${curso.titulo}</h1>
-                <p class="text-gray-500 text-sm mt-1">Construye el contenido del curso organizado por módulos y lecciones.</p>
+                <h1 class="text-3xl font-bold text-gray-900">${escapeHTML(curso.titulo)}</h1>
+                <p class="text-gray-500 text-sm mt-1">Construye el contenido del curso: lecciones y sus cuestionarios.</p>
             </div>
-            <div class="flex gap-3 shrink-0">
-                <button class="border border-gray-300 text-gray-700 px-5 py-2.5 rounded-lg hover:bg-gray-50 text-sm font-medium transition-colors cursor-pointer flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                    Previsualizar
-                </button>
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    Publicar
-                </button>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-5 py-3 shrink-0 text-center">
+                <div class="text-2xl font-bold text-gray-900">${totalLecciones}</div>
+                <div class="text-gray-400 text-xs">${totalLecciones === 1 ? "lección" : "lecciones"}</div>
             </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-6 mb-10">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-gray-400 text-sm">Módulos</span>
-                    <div class="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center">
-                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                    </div>
-                </div>
-                <div class="text-3xl font-bold text-gray-900">${totalLecciones}</div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-gray-400 text-sm">Lecciones</span>
-                    <div class="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center">
-                        <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                    </div>
-                </div>
-                <div class="text-3xl font-bold text-gray-900">${totalLecciones}</div>
-            </div>
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <span class="text-gray-400 text-sm">Duración estimada</span>
-                    <div class="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center">
-                        <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    </div>
-                </div>
-                <div class="text-3xl font-bold text-gray-900">${duracionEstimada >= 60 ? Math.floor(duracionEstimada / 60) + "h " + (duracionEstimada % 60) + "min" : duracionEstimada + " min"}</div>
-            </div>
-        </div>
-
-        <div class="space-y-4" id="modulos-container"></div>
+        <div class="space-y-4" id="lecciones-container"></div>
     `;
 
     cont.querySelector(".breadcrumb-cursos")?.addEventListener("click", () => {
@@ -450,52 +420,39 @@ async function renderConstructor(cont) {
         render();
     });
 
-    const container = cont.querySelector("#modulos-container");
+    const container = cont.querySelector("#lecciones-container");
 
     estado.lecciones
         .slice()
         .sort((a, b) => a.orden - b.orden)
         .forEach((lec, idx) => {
-            const modulo = document.createElement("div");
-            modulo.className = "modulo";
-            modulo.dataset.expandido = idx === 0 ? "true" : "false";
+            const bloque = document.createElement("div");
+            bloque.dataset.expandido = idx === 0 ? "true" : "false";
 
-            const preview = lec.contenido ? lec.contenido.substring(0, 120) + (lec.contenido.length > 120 ? "..." : "") : "Sin contenido.";
-            const tipoIcono = idx % 3 === 0 ? "video" : idx % 3 === 1 ? "lectura" : "codigo";
-            const duracion = (15 + (idx * 5) % 20) + " min";
+            const preview = lec.contenido
+                ? lec.contenido.substring(0, 120) + (lec.contenido.length > 120 ? "..." : "")
+                : "Sin contenido.";
 
-            modulo.innerHTML = `
+            bloque.innerHTML = `
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50/50 transition-colors toggle-modulo">
-                        <div class="flex items-center gap-3">
-                            <span class="text-gray-300 cursor-grab hover:text-gray-500 transition-colors">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 6h2v2H8V6zm6 0h2v2h-2V6zM8 11h2v2H8v-2zm6 0h2v2h-2v-2zm-6 5h2v2H8v-2zm6 0h2v2h-2v-2z"/></svg>
-                            </span>
-                            <span class="bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-md">Módulo ${idx + 1}</span>
-                            <h3 class="font-semibold text-gray-900">${lec.titulo}</h3>
+                    <div class="flex items-center justify-between p-5 hover:bg-gray-50/50 transition-colors">
+                        <div class="flex items-center gap-3 cursor-pointer toggle-leccion flex-1 min-w-0">
+                            <span class="bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-md shrink-0">Lección ${idx + 1}</span>
+                            <h3 class="font-semibold text-gray-900 truncate">${escapeHTML(lec.titulo)}</h3>
                         </div>
-                        <svg class="w-5 h-5 text-gray-400 transition-transform toggle-icon ${idx === 0 ? "rotate-180" : ""}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        <div class="flex items-center gap-2 shrink-0">
+                            <button class="btn-edit-lec text-gray-400 hover:text-blue-600 transition-colors p-1 cursor-pointer" title="Editar lección">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                            </button>
+                            <button class="btn-del-lec text-gray-400 hover:text-red-600 transition-colors p-1 cursor-pointer" title="Eliminar lección">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                            <svg class="w-5 h-5 text-gray-400 transition-transform toggle-icon ${idx === 0 ? "rotate-180" : ""} toggle-leccion cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </div>
                     </div>
-                    <div class="contenido-modulo ${idx === 0 ? "" : "hidden"}">
+                    <div class="contenido-leccion ${idx === 0 ? "" : "hidden"}">
                         <div class="px-5 pb-5 space-y-3">
-                            <div class="flex items-center gap-4 bg-gray-50 rounded-xl p-4 group">
-                                <div class="w-10 h-10 rounded-lg ${tipoIcono === "video" ? "bg-blue-100" : tipoIcono === "lectura" ? "bg-green-100" : "bg-orange-100"} flex items-center justify-center shrink-0">
-                                    ${tipoIcono === "video" ? '<svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>' : tipoIcono === "lectura" ? '<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>' : '<svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>'}
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="font-medium text-gray-900 text-sm">${lec.titulo}</div>
-                                    <div class="text-xs text-gray-400 mt-0.5">${tipoIcono === "video" ? "Video" : tipoIcono === "lectura" ? "Lectura" : "Práctica"} · ${duracion}</div>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button class="btn-edit-lec text-gray-400 hover:text-blue-600 transition-colors p-1 cursor-pointer" title="Editar">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                                    </button>
-                                    <button class="btn-del-lec text-gray-400 hover:text-red-600 transition-colors p-1 cursor-pointer" title="Eliminar">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="bg-gray-50 rounded-xl p-4 text-sm text-gray-600">${preview}</div>
+                            <div class="bg-gray-50 rounded-xl p-4 text-sm text-gray-600 preview-contenido"></div>
 
                             <div class="border-t border-gray-100 pt-3 mt-1">
                                 <button class="btn-toggle-quiz text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1.5 cursor-pointer transition-colors w-full text-left">
@@ -505,32 +462,31 @@ async function renderConstructor(cont) {
                                 </button>
                                 <div class="contenido-quiz hidden mt-3 space-y-3"></div>
                             </div>
-
-                            <button class="btn-add-content w-full border-2 border-dashed border-gray-200 rounded-xl py-3.5 text-sm text-gray-400 hover:border-blue-400 hover:text-blue-500 transition-all cursor-pointer flex items-center justify-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                Agregar contenido
-                            </button>
                         </div>
                     </div>
                 </div>
             `;
 
-            const contenidoModulo = modulo.querySelector(".contenido-modulo");
-            const quizContainer = modulo.querySelector(".contenido-quiz");
+            // preview con textContent: es contenido de la lección escrito por el usuario
+            bloque.querySelector(".preview-contenido").textContent = preview;
+
+            const contenidoLeccion = bloque.querySelector(".contenido-leccion");
             let quizCargado = false;
 
-            modulo.querySelector(".toggle-modulo").addEventListener("click", () => {
-                const icono = modulo.querySelector(".toggle-icon");
-                const expandido = modulo.dataset.expandido === "true";
-                modulo.dataset.expandido = !expandido;
-                contenidoModulo.classList.toggle("hidden", expandido);
-                icono.classList.toggle("rotate-180", !expandido);
+            bloque.querySelectorAll(".toggle-leccion").forEach(t => {
+                t.addEventListener("click", () => {
+                    const icono = bloque.querySelector(".toggle-icon");
+                    const expandido = bloque.dataset.expandido === "true";
+                    bloque.dataset.expandido = !expandido;
+                    contenidoLeccion.classList.toggle("hidden", expandido);
+                    icono.classList.toggle("rotate-180", !expandido);
+                });
             });
 
-            modulo.querySelector(".btn-toggle-quiz").addEventListener("click", (e) => {
+            bloque.querySelector(".btn-toggle-quiz").addEventListener("click", (e) => {
                 e.stopPropagation();
-                const quizSection = modulo.querySelector(".contenido-quiz");
-                const quizIcon = modulo.querySelector(".toggle-quiz-icon");
+                const quizSection = bloque.querySelector(".contenido-quiz");
+                const quizIcon = bloque.querySelector(".toggle-quiz-icon");
                 const oculto = quizSection.classList.toggle("hidden");
                 quizIcon.classList.toggle("rotate-180", !oculto);
                 if (!oculto && !quizCargado) {
@@ -539,12 +495,12 @@ async function renderConstructor(cont) {
                 }
             });
 
-            modulo.querySelector(".btn-edit-lec")?.addEventListener("click", (e) => {
+            bloque.querySelector(".btn-edit-lec")?.addEventListener("click", (e) => {
                 e.stopPropagation();
                 mostrarFormLeccion(lec);
             });
 
-            modulo.querySelector(".btn-del-lec")?.addEventListener("click", (e) => {
+            bloque.querySelector(".btn-del-lec")?.addEventListener("click", (e) => {
                 e.stopPropagation();
                 confirmar(
                     `¿Eliminar la lección "${lec.titulo}"? Si tiene cuestionario, también se eliminará.`,
@@ -555,22 +511,21 @@ async function renderConstructor(cont) {
                 );
             });
 
-            modulo.querySelector(".btn-add-content")?.addEventListener("click", (e) => {
-                e.stopPropagation();
-                mostrarFormLeccion(null, lec.orden + 1);
-            });
-
-            container.appendChild(modulo);
+            container.appendChild(bloque);
         });
 
-    const btnNuevoModulo = document.createElement("button");
-    btnNuevoModulo.className = "w-full border-2 border-dashed border-gray-200 rounded-xl py-8 text-sm text-gray-400 hover:border-blue-400 hover:text-blue-500 transition-all cursor-pointer flex items-center justify-center gap-2";
-    btnNuevoModulo.innerHTML = `
+    const btnNuevaLeccion = document.createElement("button");
+    btnNuevaLeccion.className = "w-full border-2 border-dashed border-gray-200 rounded-xl py-8 text-sm text-gray-400 hover:border-blue-400 hover:text-blue-500 transition-all cursor-pointer flex items-center justify-center gap-2";
+    btnNuevaLeccion.innerHTML = `
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-        Crear nuevo módulo
+        Nueva lección
     `;
-    btnNuevoModulo.addEventListener("click", () => mostrarFormLeccion());
-    container.appendChild(btnNuevoModulo);
+    // el orden sugerido es el siguiente al ultimo existente
+    const siguienteOrden = totalLecciones > 0
+        ? Math.max(...estado.lecciones.map(l => l.orden)) + 1
+        : 1;
+    btnNuevaLeccion.addEventListener("click", () => mostrarFormLeccion(null, siguienteOrden));
+    container.appendChild(btnNuevaLeccion);
 }
 
 function mostrarFormLeccion(leccionExistente = null, ordenSugerido = null) {
@@ -612,25 +567,15 @@ function mostrarFormLeccion(leccionExistente = null, ordenSugerido = null) {
 async function cargarCuestionario(leccion, container) {
     container.innerHTML = `<div class="text-center py-4 text-gray-400 text-sm">Cargando cuestionario...</div>`;
 
-    const cache = estado._cuestionariosCache[leccion.id];
-    if (cache) {
-        try {
-            const r = await apiGet(`/cuestionarios/${cache}`);
-            if (r && r.leccion_id === leccion.id) {
-                renderCuestionario(leccion, r, container);
-                return;
-            }
-        } catch { }
-    }
-
     try {
-        const r = await apiGet(`/cuestionarios/${leccion.id}`);
-        if (r && r.leccion_id === leccion.id) {
-            estado._cuestionariosCache[leccion.id] = r.id;
-            renderCuestionario(leccion, r, container);
-            return;
-        }
-    } catch { }
+        // El endpoint devuelve el cuestionario de la leccion por el id de la LECCION.
+        // Si la leccion no tiene cuestionario, responde 404 y caemos al catch.
+        const cuestionario = await apiGet(`/lecciones/${leccion.id}/cuestionario`);
+        renderCuestionario(leccion, cuestionario, container);
+        return;
+    } catch {
+        // sin cuestionario todavia: ofrecer crearlo
+    }
 
     container.innerHTML = `
         <div class="text-center py-6 bg-purple-50/50 rounded-xl">
@@ -662,7 +607,6 @@ function mostrarFormCrearCuestionario(leccion, container) {
         if (!titulo || titulo.length < 3) { toast("El título debe tener al menos 3 caracteres.", "error"); return; }
         try {
             const cuestionario = await apiPost(`/lecciones/${leccion.id}/cuestionarios`, { titulo });
-            estado._cuestionariosCache[leccion.id] = cuestionario.id;
             renderCuestionario(leccion, cuestionario, container);
             toast("Cuestionario creado.");
         } catch (e) {
@@ -676,14 +620,14 @@ function renderCuestionario(leccion, cuestionario, container) {
 
     container.innerHTML = `
         <div class="flex items-center justify-between bg-purple-50/50 rounded-xl p-3">
-            <div class="flex items-center gap-2">
-                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                <span class="text-sm font-medium text-gray-900">${cuestionario.titulo}</span>
+            <div class="flex items-center gap-2 min-w-0">
+                <svg class="w-4 h-4 text-purple-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span class="text-sm font-medium text-gray-900 truncate">${escapeHTML(cuestionario.titulo)}</span>
             </div>
-            <button class="btn-del-quiz text-red-500 hover:text-red-600 text-xs px-2 py-1 rounded hover:bg-red-50 transition-colors cursor-pointer">Eliminar</button>
+            <button class="btn-del-quiz text-red-500 hover:text-red-600 text-xs px-2 py-1 rounded hover:bg-red-50 transition-colors cursor-pointer shrink-0">Eliminar</button>
         </div>
         <div class="flex items-center justify-between">
-            <span class="text-xs text-gray-400">${tienePreguntas ? cuestionario.preguntas.length + " preguntas" : "Sin preguntas"}</span>
+            <span class="text-xs text-gray-400">${tienePreguntas ? cuestionario.preguntas.length + " pregunta(s)" : "Sin preguntas"}</span>
             <button class="btn-nueva-preg text-purple-600 hover:text-purple-700 text-xs font-medium cursor-pointer">+ Nueva pregunta</button>
         </div>
     `;
@@ -693,7 +637,6 @@ function renderCuestionario(leccion, cuestionario, container) {
             `¿Eliminar el cuestionario "${cuestionario.titulo}" y todas sus preguntas?`,
             async () => {
                 await apiDelete(`/cuestionarios/${cuestionario.id}`);
-                delete estado._cuestionariosCache[leccion.id];
                 container.innerHTML = "";
                 cargarCuestionario(leccion, container);
                 toast("Cuestionario eliminado.");
@@ -710,16 +653,15 @@ function renderCuestionario(leccion, cuestionario, container) {
         lista.className = "space-y-2";
 
         cuestionario.preguntas.forEach((preg, idx) => {
+            const correctas = preg.opciones ? preg.opciones.filter(o => o.es_correcta).length : 0;
+            const totalOpc = preg.opciones ? preg.opciones.length : 0;
             const card = document.createElement("div");
             card.className = "bg-white border border-gray-100 rounded-lg p-3";
             card.innerHTML = `
                 <div class="flex items-start justify-between gap-2">
                     <div class="flex-1 min-w-0">
-                        <div class="text-sm font-medium text-gray-900">${idx + 1}. ${preg.enunciado}</div>
-                        <div class="text-xs text-gray-400 mt-1">
-                            ${preg.opciones ? preg.opciones.filter(o => o.es_correcta).length + " correcta" : ""}
-                            · ${preg.opciones ? preg.opciones.length : 0} opciones
-                        </div>
+                        <div class="text-sm font-medium text-gray-900">${idx + 1}. ${escapeHTML(preg.enunciado)}</div>
+                        <div class="text-xs text-gray-400 mt-1">${correctas} correcta(s) · ${totalOpc} opciones</div>
                     </div>
                     <div class="flex gap-1 shrink-0">
                         <button class="btn-edit-preg text-gray-400 hover:text-blue-600 text-xs p-1 cursor-pointer" title="Editar">
@@ -738,8 +680,7 @@ function renderCuestionario(leccion, cuestionario, container) {
             card.querySelector(".btn-del-preg").addEventListener("click", () => {
                 confirmar(`¿Eliminar esta pregunta?`, async () => {
                     await apiDelete(`/preguntas/${preg.id}`);
-                    const r = await apiGet(`/cuestionarios/${cuestionario.id}`);
-                    estado._cuestionariosCache[leccion.id] = r.id;
+                    const r = await apiGet(`/lecciones/${leccion.id}/cuestionario`);
                     renderCuestionario(leccion, r, container);
                     toast("Pregunta eliminada.");
                 });
@@ -757,28 +698,17 @@ function mostrarFormPregunta(cuestionario, preguntaExistente, container, leccion
     const form = document.createElement("div");
     form.className = "bg-white border border-gray-100 rounded-xl p-4 space-y-3";
 
+    const previas = preguntaExistente?.opciones || [
+        { texto: "", es_correcta: true },
+        { texto: "", es_correcta: false },
+    ];
+
     form.innerHTML = `
-        <textarea id="preg-enunciado" placeholder="Enunciado de la pregunta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none text-sm resize-y min-h-[60px]">${preguntaExistente?.enunciado || ""}</textarea>
-        <textarea id="preg-explicacion" placeholder="Explicación pedagógica (se muestra al fallar)" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm resize-y min-h-[60px]">${preguntaExistente?.explicacion || ""}</textarea>
+        <textarea id="preg-enunciado" placeholder="Enunciado de la pregunta" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none text-sm resize-y min-h-[60px]"></textarea>
+        <textarea id="preg-explicacion" placeholder="Explicación pedagógica (se muestra al fallar)" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm resize-y min-h-[60px]"></textarea>
         <div>
             <label class="text-xs font-medium text-gray-500 mb-1 block">Opciones <span class="text-gray-400">(marca la correcta)</span></label>
-            <div class="space-y-2" id="opciones-container">
-                ${(() => {
-                    const previas = preguntaExistente?.opciones || [
-                        { texto: "", es_correcta: true },
-                        { texto: "", es_correcta: false },
-                    ];
-                    return previas.map((op, i) => `
-                        <div class="flex items-center gap-2 opcion-row">
-                            <input type="radio" name="quiz-correcta" value="${i}" ${op.es_correcta ? "checked" : ""} class="cursor-pointer shrink-0">
-                            <input type="text" placeholder="Opción ${i + 1}" value="${op.texto}" class="opcion-input flex-1 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none text-sm">
-                            <button class="btn-quitar-op text-red-400 hover:text-red-600 p-1 cursor-pointer ${previas.length <= 2 ? "hidden" : ""}">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                            </button>
-                        </div>
-                    `).join("");
-                })()}
-            </div>
+            <div class="space-y-2" id="opciones-container"></div>
             <button id="btn-agregar-op" class="mt-2 text-xs text-purple-600 hover:text-purple-700 font-medium cursor-pointer flex items-center gap-1">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Agregar opción
@@ -790,40 +720,43 @@ function mostrarFormPregunta(cuestionario, preguntaExistente, container, leccion
         </div>
     `;
 
-    form.querySelector("#btn-agregar-op").addEventListener("click", () => {
-        const containerOp = form.querySelector("#opciones-container");
-        const rows = containerOp.querySelectorAll(".opcion-row");
-        const idx = rows.length;
+    // Valores con .value (no interpolados en el HTML): datos de la API tratados como texto plano
+    form.querySelector("#preg-enunciado").value = preguntaExistente?.enunciado || "";
+    form.querySelector("#preg-explicacion").value = preguntaExistente?.explicacion || "";
+
+    const opcionesContainer = form.querySelector("#opciones-container");
+
+    function agregarFilaOpcion(texto = "", correcta = false) {
+        const idx = opcionesContainer.querySelectorAll(".opcion-row").length;
         const row = document.createElement("div");
         row.className = "flex items-center gap-2 opcion-row";
         row.innerHTML = `
-            <input type="radio" name="quiz-correcta" value="${idx}" class="cursor-pointer shrink-0">
+            <input type="radio" name="quiz-correcta" value="${idx}" ${correcta ? "checked" : ""} class="cursor-pointer shrink-0">
             <input type="text" placeholder="Opción ${idx + 1}" class="opcion-input flex-1 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none text-sm">
             <button class="btn-quitar-op text-red-400 hover:text-red-600 p-1 cursor-pointer">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         `;
+        row.querySelector(".opcion-input").value = texto;  // texto de la API como valor plano
         row.querySelector(".btn-quitar-op").addEventListener("click", () => {
             row.remove();
             actualizarRadios(form);
             actualizarBotonesQuitar(form);
         });
-        containerOp.appendChild(row);
+        opcionesContainer.appendChild(row);
+    }
+
+    previas.forEach(op => agregarFilaOpcion(op.texto, op.es_correcta));
+    actualizarBotonesQuitar(form);
+
+    form.querySelector("#btn-agregar-op").addEventListener("click", () => {
+        agregarFilaOpcion();
         actualizarRadios(form);
         actualizarBotonesQuitar(form);
     });
 
-    form.querySelectorAll(".btn-quitar-op").forEach(btn => {
-        btn.addEventListener("click", () => {
-            btn.closest(".opcion-row").remove();
-            actualizarRadios(form);
-            actualizarBotonesQuitar(form);
-        });
-    });
-
     form.querySelector(".btn-cancel-preg").addEventListener("click", async () => {
-        const r = await apiGet(`/cuestionarios/${cuestionario.id}`);
-        estado._cuestionariosCache[leccion.id] = r.id;
+        const r = await apiGet(`/lecciones/${leccion.id}/cuestionario`);
         renderCuestionario(leccion, r, container);
     });
 
@@ -855,8 +788,7 @@ function mostrarFormPregunta(cuestionario, preguntaExistente, container, leccion
             } else {
                 await apiPost(`/cuestionarios/${cuestionario.id}/preguntas`, datos);
             }
-            const r = await apiGet(`/cuestionarios/${cuestionario.id}`);
-            estado._cuestionariosCache[leccion.id] = r.id;
+            const r = await apiGet(`/lecciones/${leccion.id}/cuestionario`);
             renderCuestionario(leccion, r, container);
             toast(esEdicion ? "Pregunta actualizada." : "Pregunta creada.");
         } catch (e) {
@@ -895,6 +827,5 @@ export function vistaPanelProfesor(app) {
     estado.vista = "cursos";
     estado.curso = null;
     estado.lecciones = [];
-    estado._cuestionariosCache = {};
     render();
 }

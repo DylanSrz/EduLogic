@@ -43,17 +43,10 @@ export async function pedirApi(ruta, opciones = {}) {
         if (!respuesta.ok) {
 
             const error = await respuesta.json();
-            let mensaje = "Ocurrió un error en la petición.";
 
-            if (typeof error.detail === "string") {
-                mensaje = error.detail;
-            } else if (Array.isArray(error.detail) && error.detail.length > 0) {
-                const primero = error.detail[0];
-                const campo = Array.isArray(primero.loc) ? primero.loc.slice(1).join(" > ") : "";
-                mensaje = campo ? `"${campo}": ${primero.msg}` : (primero.msg || primero.message || mensaje);
-            }
-
-            throw new Error(mensaje);
+            throw new Error(
+                error.detail || "Ocurrió un error en la petición."
+            );
 
         }
 
