@@ -25,6 +25,10 @@ build/
 # --- Node / Frontend (Tailwind CLI, herramientas) ---
 node_modules/
 
+# CSS compilado: es un artefacto generado, no codigo fuente.
+# Se genera localmente con `npm run dev` y en el despliegue con `npm run build`.
+frontend/css/estilos.css
+
 # --- Editores e IDEs ---
 .vscode/
 .idea/

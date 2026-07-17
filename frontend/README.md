@@ -14,8 +14,21 @@ npm install
 
 ## Compilar Tailwind CSS
 
+> ⚠️ `css/estilos.css` es un **archivo generado** y NO se versiona en Git (decisión de equipo, issue #93).
+> Si acabas de clonar el repo o ves la app sin estilos, te falta este paso.
+
+Mientras desarrollas, deja corriendo en una terminal:
+
 ```bash
-npx @tailwindcss/cli -i ./css/entrada.css -o ./css/estilos.css --watch
+npm run dev
+```
+
+Recompila los estilos automáticamente cada vez que guardas un archivo — no vuelvas a editar `estilos.css` a mano: se sobrescribe en cada compilación.
+
+Para generar la versión final minificada (la usa el despliegue):
+
+```bash
+npm run build
 ```
 
 ## Ejecutar el proyecto
