@@ -108,6 +108,12 @@ def obtener_cuestionario(
             detail="Cuestionario no encontrado.",
         )
 
+    return respuesta_segun_rol(cuestionario, usuario)
+
+
+def respuesta_segun_rol(cuestionario, usuario):
+    """Aplica la decision de seguridad del GET: version completa solo para
+    el profesor dueño del curso o un admin; filtrada para el resto."""
     es_editor = usuario.rol.value == "admin" or (
         usuario.rol.value == "profesor"
         and cuestionario.leccion.curso.creador_id == usuario.id
@@ -115,6 +121,37 @@ def obtener_cuestionario(
     if es_editor:
         return CuestionarioParaProfesor.model_validate(cuestionario)
     return CuestionarioParaEstudiante.model_validate(cuestionario)
+
+
+# ---------------------------------------------------------------------------
+# GET /lecciones/{leccion_id}/cuestionario  -  Cualquier usuario autenticado.
+# El frontend navega desde la leccion hacia su quiz (panel del profesor y
+# vista del estudiante): este endpoint evita que el cliente tenga que
+# adivinar el id del cuestionario. Mismo filtrado por rol del GET anterior.
+# ---------------------------------------------------------------------------
+@router.get("/lecciones/{leccion_id}/cuestionario")
+def obtener_cuestionario_de_leccion(
+    leccion_id: int,
+    db: Session = Depends(get_db),
+    usuario: Usuario = Depends(usuario_actual),
+):
+    """Devuelve el cuestionario de una leccion, filtrado segun el rol."""
+    leccion = db.get(Leccion, leccion_id)
+    if not leccion:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Lección no encontrada.",
+        )
+
+    if not leccion.cuestionario:
+        # 404 con mensaje propio: el frontend usa este caso para ofrecer
+        # "crear cuestionario" en el panel del profesor.
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Esta lección no tiene cuestionario.",
+        )
+
+    return respuesta_segun_rol(leccion.cuestionario, usuario)
 
 
 # ---------------------------------------------------------------------------
