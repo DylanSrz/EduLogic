@@ -4,7 +4,8 @@
   "description": "Aquí se desarrollará la aplicación web utilizando HTML, Tailwind CSS y JavaScript.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx @tailwindcss/cli -i css/entrada.css -o css/estilos.css --watch",
+    "build": "npx @tailwindcss/cli -i css/entrada.css -o css/estilos.css --minify"
   },
   "keywords": [],
   "author": "",
