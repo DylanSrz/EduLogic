@@ -40,26 +40,29 @@ export async function vistaLeccion(app, parametros) {
     }
     
     const contenedor = document.createElement("div");
-contenedor.className ="max-w-5xl mx-auto px-4 py-12";  
-contenedor.innerHTML = `
-        <div class="max-w-4xl mx-auto">
-            <a
-                href="#/cursos/${leccion.curso_id}"
-                class="text-blue-600 hover:underline inline-block mb-8"
-            >
-                ← Volver al curso
-            </a>
 
-            <h1 class="text-4xl font-bold text-gray-900 mb-8">
-                ${leccion.titulo}
-            </h1>
+    contenedor.className ="max-w-5xl mx-auto px-4 py-12";  
+    contenedor.innerHTML = `
+            <div class="max-w-4xl mx-auto">
+                <a
+                    href="#/cursos/${leccion.curso_id}"
+                    class="text-blue-600 hover:underline inline-block mb-8"
+                >
+                    ← Volver al curso
+                </a>
 
-            <article class="bg-white rounded-xl shadow-md p-8">
-                <p class="text-gray-700 leading-8 text-lg whitespace-pre-line">
-                    ${leccion.contenido}
-                </p>
-            </article>
-        </div>
-    `;
-    app.appendChild(contenedor);
+                <h1 class="text-4xl font-bold text-gray-900 mb-8">
+                    ${leccion.titulo}
+                </h1>
+
+                <article class="bg-white rounded-xl shadow-md p-8">
+                    <p class="text-gray-700 leading-8 text-lg whitespace-pre-line">
+                        ${leccion.contenido}
+                    </p>
+                </article>
+            </div>
+
+        `;
+
+        app.appendChild(contenedor);
 }

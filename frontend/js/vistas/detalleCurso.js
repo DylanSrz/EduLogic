@@ -108,11 +108,7 @@ export async function vistaDetalleCurso(app, params) {
             titulo.className = "text-gray-700";
             titulo.textContent = leccion.titulo;
 
-            const flecha = document.createElement("span");
-            flecha.textContent = "→";
-            flecha.className = "text-gray-400 text-xl group-hover:text-blue-600";
-
-            enlace.append(numero, titulo, flecha);
+            enlace.append(numero, titulo);
 
             listaLecciones.appendChild(enlace);
 
