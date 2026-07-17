@@ -109,6 +109,20 @@ export function vistaRegistro(app) {
                 </div>
 
                 <div class="campo-contenedor">
+                    <label class="block mb-2 font-medium text-gray-700 text-sm">Tipo de cuenta</label>
+                    <div class="flex gap-3">
+                        <label class="flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 border-gray-300 cursor-pointer hover:border-blue-400 transition-colors has-checked:border-blue-600 has-checked:bg-blue-50" id="label-rol-estudiante">
+                            <input type="radio" name="rol" value="estudiante" checked class="cursor-pointer">
+                            <span class="text-sm font-medium text-gray-700">Estudiante</span>
+                        </label>
+                        <label class="flex-1 flex items-center justify-center gap-2 p-3 rounded-lg border-2 border-gray-300 cursor-pointer hover:border-blue-400 transition-colors has-checked:border-blue-600 has-checked:bg-blue-50" id="label-rol-profesor">
+                            <input type="radio" name="rol" value="profesor" class="cursor-pointer">
+                            <span class="text-sm font-medium text-gray-700">Profesor</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="campo-contenedor">
                     <label for="registroContrasena" class="block mb-1 font-medium text-gray-700 text-sm">Contrasena</label>
                     <div class="relative">
                         <input
@@ -176,6 +190,7 @@ export function vistaRegistro(app) {
     const inputEmail = contenedor.querySelector("#registroEmail");
     const inputContrasena = contenedor.querySelector("#registroContrasena");
     const inputConfirmar = contenedor.querySelector("#registroConfirmar");
+    const inputsRol = contenedor.querySelectorAll("input[name='rol']");
     const btnSubmit = contenedor.querySelector("#btnRegistroSubmit");
     const btnOjoContrasena = contenedor.querySelector(".btn-ojo-contrasena");
     const btnOjoConfirmar = contenedor.querySelector(".btn-ojo-confirmar");
@@ -244,12 +259,14 @@ export function vistaRegistro(app) {
         btnSubmit.style.opacity = "0.7";
         btnSubmit.textContent = "Creando cuenta...";
 
+        const rolSeleccionado = Array.from(inputsRol).find(r => r.checked)?.value || "estudiante";
+
         try {
             await apiPost("/auth/registro", {
                 nombre: nombre.trim(),
                 email: email.trim(),
                 contrasena: contrasena,
-                rol: "estudiante"
+                rol: rolSeleccionado,
             });
 
             navegarA("/login", "Cuenta creada con exito! Inicia sesion para continuar.");
