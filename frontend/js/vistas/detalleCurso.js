@@ -46,14 +46,44 @@ export async function vistaDetalleCurso(app, params) {
     const contenedor = document.createElement("div");
     contenedor.className ="max-w-5xl mx-auto px-6 py-10";
     contenedor.innerHTML = `
-        <a href="#/cursos" class="text-blue-600 hover:underline mb-4 inline-block">← Volver al catálogo</a>
-        <span class="inline-block bg-blue-100 text-blue-700 text-sm font-semibold px-3 py-1 rounded-full mb-2">${curso.nivel}</span>
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">${curso.titulo}</h2>
-        <p class="text-lg text-gray-600 mb-8">${curso.descripcion}</p>
-        <div class="bg-white rounded-xl shadow-md p-6">
-            <h3 class="text-xl font-semibold mb-4">Lecciones</h3>
-            <div id="lista-lecciones" class="space-y-3"></div>
-        </div>
+        <a
+            href="#/cursos"
+            class="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium mb-8 transition"
+        >
+            ← Volver al catálogo
+        </a>
+
+        <section class="bg-white rounded-2xl shadow-md border border-gray-100 p-8 mb-10">
+
+            <span class="inline-flex items-center px-4 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-5">
+                ${curso.nivel}
+            </span>
+
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">
+                ${curso.titulo}
+            </h1>
+            <p class="text-lg leading-9 text-gray-600 max-w-3xl mt-5">  
+                ${curso.descripcion}
+            </p>
+
+            <div class="flex items-center gap-2 mt-8 text-gray-600 font-medium">
+                <span class="text-xl">📚</span>
+                <span>${lecciones.length} lecciones disponibles</span>
+            </div>
+
+        </section>
+
+        <section>
+
+            <div class="mt-12">
+                <h3 class="text-3xl font-bold mb-6">
+                    Lecciones del curso
+                </h3>
+
+                <div id="lista-lecciones" class="space-y-4"></div>
+            </div>
+
+        </section>
     `;
        
 
@@ -69,19 +99,20 @@ export async function vistaDetalleCurso(app, params) {
 
             const enlace = document.createElement("a");
             enlace.href = `#/lecciones/${leccion.id}`;
-            enlace.className =
-                "flex items-center gap-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition";
-
+            enlace.className ="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-md transition";
             const numero = document.createElement("span");
-            numero.className = "font-bold text-blue-600";
+            numero.className = "w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold flex-shrink-0";
             numero.textContent = `${leccion.orden}.`;
 
             const titulo = document.createElement("span");
             titulo.className = "text-gray-700";
             titulo.textContent = leccion.titulo;
 
-            enlace.appendChild(numero);
-            enlace.appendChild(titulo);
+            const flecha = document.createElement("span");
+            flecha.textContent = "→";
+            flecha.className = "text-gray-400 text-xl group-hover:text-blue-600";
+
+            enlace.append(numero, titulo, flecha);
 
             listaLecciones.appendChild(enlace);
 
