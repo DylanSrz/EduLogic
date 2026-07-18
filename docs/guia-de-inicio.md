@@ -206,6 +206,31 @@ Instálalas esta semana, no cuando las necesites con afán:
 
 Verifica que todo quedó bien: `git --version`, `python --version` y `node --version` deben responder en tu terminal.
 
+> La extensión Live Server sigue sirviendo para trabajar cada parte por separado, pero ya **no es obligatoria**: hay un comando único que levanta todo (ver abajo).
+
+---
+
+## 8.1. Levantar el proyecto (un solo comando, cualquier sistema operativo)
+
+Desde la **raíz** del proyecto. La primera vez, prepara el equipo:
+
+```bash
+npm install        # trae la herramienta que orquesta los procesos (concurrently)
+npm run setup      # crea el entorno del backend, instala dependencias y compila el CSS
+```
+
+Luego crea el archivo **`backend/.env`** (paso manual, no se puede automatizar porque son secretos): copia `backend/.env.example` y completa `DATABASE_URL`, `SECRET_KEY` y `ACCESS_TOKEN_EXPIRE_MINUTES` con los valores del **canal privado del equipo**. Sin este archivo el backend no arranca.
+
+A partir de ahí, para levantar TODO (backend + compilación de Tailwind + servidor del frontend) con un solo comando:
+
+```bash
+npm run dev
+```
+
+Abre `http://localhost:5500`. Para bajar todo, `Ctrl+C` una vez.
+
+Funciona igual en Windows, Mac y Linux (el comando detecta el sistema por dentro). Si prefieres levantar cada parte por separado — por ejemplo para depurar solo el backend — sigues pudiendo: `uvicorn app.main:app --reload` en `backend/`, `npm run dev` en `frontend/` para el CSS, y Live Server para el HTML.
+
 ---
 
 ## 9. Tus primeros pasos (checklist de onboarding)
