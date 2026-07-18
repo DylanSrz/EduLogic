@@ -31,12 +31,13 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(title="EduLogic API")
 
 # CORS: orígenes autorizados a consumir la API desde el navegador.
-# Al desplegar hay que agregar aquí el dominio del frontend en producción.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://127.0.0.1:5500",  # Live Server
-        "http://localhost:5500",  # mismo Live Server, pero es OTRO origen para el navegador
+        "http://127.0.0.1:5500",      # desarrollo local
+        "http://localhost:5500",      # mismo servidor local, pero es OTRO origen para el navegador
+        "https://edulogic.pro",       # frontend en producción (Vercel + dominio propio)
+        "https://www.edulogic.pro",
     ],
     allow_methods=["*"],
     allow_headers=["*"],
