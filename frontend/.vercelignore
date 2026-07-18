@@ -1,0 +1,3 @@
+# Vercel solo debe publicar los archivos estáticos de la SPA,
+# no las dependencias de compilación de Tailwind.
+node_modules
