@@ -1,1 +1,149 @@
+/*
+ * Sistema de diseño de EduLogic — identidad "lúdica y energética"
+ * (decisión de equipo, reunión del 18 de julio de 2026).
+ *
+ * Este archivo es la única fuente de la marca: paleta, tipografías,
+ * radios y animaciones. Tailwind v4 permite redefinir los tokens de su
+ * tema en @theme: al reasignar aquí las escalas de color estándar
+ * (blue, gray, indigo, purple, slate…), TODAS las utilidades que ya usan
+ * las vistas (bg-blue-600, text-gray-700, …) adoptan la nueva identidad
+ * sin editar el JavaScript de cada vista.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap");
 @import "tailwindcss";
+
+@theme {
+    /* --- Tipografías --- */
+    /* Nunito: cuerpo redondeado y muy legible. Baloo 2: titulares con
+       carácter amable. Fallback al sistema por si no hay conexión. */
+    --font-sans: "Nunito", "Segoe UI", system-ui, sans-serif;
+    --font-display: "Baloo 2", "Nunito", "Segoe UI", system-ui, sans-serif;
+
+    /* --- Primario de la marca: turquesa vibrante (escala blue) --- */
+    --color-blue-50: #ecfbfc;
+    --color-blue-100: #d3f5f8;
+    --color-blue-200: #abebf1;
+    --color-blue-300: #76dbe6;
+    --color-blue-400: #3dc5d6;
+    --color-blue-500: #1baac0;
+    --color-blue-600: #0d8ea5;
+    --color-blue-700: #0f7187;
+    --color-blue-800: #135a6c;
+    --color-blue-900: #144a5b;
+    --color-blue-950: #0b303d;
+
+    /* --- Azul océano profundo (escala indigo: cierra los degradados) --- */
+    --color-indigo-50: #edf6fa;
+    --color-indigo-100: #d8ebf3;
+    --color-indigo-200: #b5d8e8;
+    --color-indigo-300: #86bdd6;
+    --color-indigo-400: #549cbe;
+    --color-indigo-500: #3680a6;
+    --color-indigo-600: #28688d;
+    --color-indigo-700: #235473;
+    --color-indigo-800: #1f455e;
+    --color-indigo-900: #1c3a4f;
+    --color-indigo-950: #122736;
+
+    /* --- Neutros cálidos color crema (escala gray: fondos y textos) --- */
+    --color-gray-50: #fbf7ef;
+    --color-gray-100: #f4eee1;
+    --color-gray-200: #e7ddca;
+    --color-gray-300: #d2c5ab;
+    --color-gray-400: #a2947a;
+    --color-gray-500: #837763;
+    --color-gray-600: #695f4f;
+    --color-gray-700: #524a3e;
+    --color-gray-800: #3a342c;
+    --color-gray-900: #262220;
+    --color-gray-950: #171412;
+
+    /* --- Tinta petróleo (escala slate: botones oscuros, paneles) --- */
+    --color-slate-50: #f4f8f9;
+    --color-slate-100: #e6eef0;
+    --color-slate-200: #cfdee2;
+    --color-slate-300: #aac4cb;
+    --color-slate-400: #7ba0aa;
+    --color-slate-500: #587e8a;
+    --color-slate-600: #45656f;
+    --color-slate-700: #38525b;
+    --color-slate-800: #2a3f47;
+    --color-slate-900: #1d2e35;
+    --color-slate-950: #121f24;
+
+    /* --- Coral enérgico (escalas purple y violet: acentos de acción) --- */
+    --color-purple-50: #fff1ec;
+    --color-purple-100: #ffe3d9;
+    --color-purple-200: #ffc5b3;
+    --color-purple-300: #ff9f85;
+    --color-purple-400: #ff7a5c;
+    --color-purple-500: #f95b3d;
+    --color-purple-600: #e1442a;
+    --color-purple-700: #bc3520;
+    --color-purple-800: #972c1e;
+    --color-purple-900: #7a281e;
+    --color-purple-950: #421208;
+
+    --color-violet-50: #fff1ec;
+    --color-violet-100: #ffe3d9;
+    --color-violet-200: #ffc5b3;
+    --color-violet-300: #ff9f85;
+    --color-violet-400: #ff7a5c;
+    --color-violet-500: #f95b3d;
+    --color-violet-600: #e1442a;
+    --color-violet-700: #bc3520;
+    --color-violet-800: #972c1e;
+    --color-violet-900: #7a281e;
+    --color-violet-950: #421208;
+
+    /* --- Radios más generosos: componentes amables y redondeados --- */
+    --radius-lg: 0.9rem;
+    --radius-xl: 1.15rem;
+    --radius-2xl: 1.5rem;
+    --radius-3xl: 2rem;
+
+    /* --- Sombras sólidas "de juguete" (estilo sticker/neo-brutalista):
+       desplazadas y sin difuminar. Al hacer hover los componentes se
+       "aplastan" (translate + sombra corta) como un botón físico. --- */
+    --shadow-ludica: 6px 6px 0 0 #262220;
+    --shadow-ludica-sm: 3px 3px 0 0 #262220;
+    --shadow-ludica-azul: 6px 6px 0 0 #0d8ea5;
+}
+
+/* Ajustes base que aplican a toda la app sin tocar las vistas */
+@layer base {
+    h1, h2, h3 {
+        font-family: var(--font-display);
+        letter-spacing: -0.01em;
+    }
+
+    /* Textura de puntos sobre el fondo crema: da ambiente de "cuaderno
+       de juegos" a toda la app sin tocar ninguna vista. */
+    body {
+        background-image: radial-gradient(circle at 1px 1px, var(--color-gray-200) 1.2px, transparent 0);
+        background-size: 26px 26px;
+    }
+
+    ::selection {
+        background-color: #fde68a;
+    }
+}
+
+/* Animaciones compartidas por las vistas */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flotar {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-14px) rotate(3deg); }
+}
+
+/* Cinta marquesina: el contenido va duplicado dos veces, así el salto
+   de -50% empalma perfecto y el bucle se ve infinito. */
+@keyframes marquesina {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}

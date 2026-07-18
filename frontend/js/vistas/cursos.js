@@ -62,8 +62,8 @@ function mostrarLoading(container) {
     container.innerHTML = `
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             ${Array.from({ length: 6 }, () => `
-                <div class="bg-white rounded-2xl shadow-sm overflow-hidden animate-pulse">
-                    <div class="h-2 bg-gray-200 w-full"></div>
+                <div class="bg-white rounded-2xl border-2 border-gray-200 overflow-hidden animate-pulse">
+                    <div class="h-2.5 bg-gray-200 w-full"></div>
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-5">
                             <div class="h-5 bg-gray-200 rounded-full w-24"></div>
@@ -121,7 +121,7 @@ function renderizarConDatos(container, cursos, vistaFn, app) {
     const input = document.createElement("input");
     input.type = "search";
     input.placeholder = "Buscar curso...";
-    input.className = "w-full pl-10 pr-4 py-2.5 bg-gray-100 border-0 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all text-sm";
+    input.className = "w-full pl-10 pr-4 py-2.5 bg-white border-2 border-gray-900 rounded-full shadow-ludica-sm focus:outline-none focus:ring-2 focus:ring-blue-300 focus:translate-x-[2px] focus:translate-y-[2px] focus:shadow-none transition-all text-sm font-semibold";
     buscador.appendChild(input);
     barraSuperior.appendChild(buscador);
 
@@ -173,11 +173,11 @@ function renderizarConDatos(container, cursos, vistaFn, app) {
 function crearTarjeta(curso, indice) {
     const tarjeta = document.createElement("a");
     tarjeta.href = "#/cursos/" + curso.id;
-    tarjeta.className = "group block bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden";
+    tarjeta.className = "group block bg-white rounded-2xl border-2 border-gray-900 shadow-ludica hover:translate-x-1 hover:translate-y-1 hover:shadow-ludica-sm transition-all duration-200 overflow-hidden";
     tarjeta.style.animation = "fadeInUp 0.5s ease-out " + (indice * 0.08) + "s both";
 
     tarjeta.innerHTML = `
-        <div class="h-2 w-full ${colorNivelBorde(curso.nivel)}"></div>
+        <div class="h-2.5 w-full ${colorNivelBorde(curso.nivel)} border-b-2 border-gray-900"></div>
         <div class="p-6">
             <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full mb-4 ${colorNivelFondo(curso.nivel)} ${colorNivelTexto(curso.nivel)}">
                 ${iconoNivel(curso.nivel)}

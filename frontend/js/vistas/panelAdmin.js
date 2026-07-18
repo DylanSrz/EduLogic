@@ -63,7 +63,7 @@ export function vistaPanelAdmin(app) {
             </label>
         </div>
 
-        <div id="tabla-contenedor" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"></div>
+        <div id="tabla-contenedor" class="bg-white rounded-2xl border-2 border-gray-900 shadow-ludica overflow-hidden"></div>
 
         <div id="paginacion" class="flex items-center justify-between mt-6"></div>
     `;
@@ -100,7 +100,7 @@ async function recargar() {
         tabla.innerHTML = `
             <div class="p-10 text-center">
                 <p class="text-red-600 font-medium mb-3" id="admin-error"></p>
-                <button id="btn-reintentar" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">Reintentar</button>
+                <button id="btn-reintentar" class="bg-blue-600 text-white font-bold px-5 py-2 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer">Reintentar</button>
             </div>
         `;
         tabla.querySelector("#admin-error").textContent = error.message;
@@ -239,7 +239,7 @@ function abrirModalRol(usuario) {
     overlay.className = "fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4";
 
     const card = document.createElement("div");
-    card.className = "bg-white rounded-xl shadow-2xl w-full max-w-md p-6";
+    card.className = "bg-white rounded-2xl border-2 border-gray-900 shadow-ludica w-full max-w-md p-6";
     card.innerHTML = `
         <h3 class="text-lg font-semibold text-gray-900 mb-1">Cambiar rol</h3>
         <p class="text-sm text-gray-500 mb-4" data-usuario></p>
@@ -247,8 +247,8 @@ function abrirModalRol(usuario) {
             ${ROLES_ASIGNABLES.map(r => `<option value="${r}" ${r === usuario.rol ? "selected" : ""}>${r}</option>`).join("")}
         </select>
         <div class="flex justify-end gap-3">
-            <button data-cancelar class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Cancelar</button>
-            <button data-guardar class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50">Guardar</button>
+            <button data-cancelar class="px-4 py-2 text-gray-700 font-bold bg-white border-2 border-gray-900 rounded-full shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer">Cancelar</button>
+            <button data-guardar class="px-4 py-2 bg-blue-600 text-white font-bold rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer disabled:opacity-50">Guardar</button>
         </div>
     `;
     // nombre del usuario con textContent (dato de la API)
@@ -288,11 +288,11 @@ function confirmarAccion(mensaje, textoBoton, colorBoton, accion) {
     overlay.className = "fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4";
 
     const card = document.createElement("div");
-    card.className = "bg-white rounded-xl shadow-2xl w-full max-w-md p-6";
+    card.className = "bg-white rounded-2xl border-2 border-gray-900 shadow-ludica w-full max-w-md p-6";
     card.innerHTML = `
         <p class="text-gray-700 mb-6" data-mensaje></p>
         <div class="flex justify-end gap-3">
-            <button data-cancelar class="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">Cancelar</button>
+            <button data-cancelar class="px-4 py-2 text-gray-700 font-bold bg-white border-2 border-gray-900 rounded-full shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer">Cancelar</button>
             <button data-confirmar class="px-4 py-2 text-white rounded-lg transition-colors cursor-pointer disabled:opacity-50 ${colorBoton}">${textoBoton}</button>
         </div>
     `;
@@ -326,7 +326,7 @@ function mostrarToast(mensaje, tipo = "exito") {
     const existente = document.querySelector(".admin-toast");
     if (existente) existente.remove();
     const div = document.createElement("div");
-    div.className = `admin-toast fixed top-4 right-4 z-50 text-white px-6 py-3 rounded-lg shadow-lg ${tipo === "error" ? "bg-red-600" : "bg-green-600"}`;
+    div.className = `admin-toast fixed top-4 right-4 z-50 text-white font-bold px-6 py-3 rounded-full border-2 border-gray-900 shadow-ludica-sm ${tipo === "error" ? "bg-red-600" : "bg-green-600"}`;
     div.textContent = mensaje;
     document.body.appendChild(div);
     setTimeout(() => div.remove(), 3000);
