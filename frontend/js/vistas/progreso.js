@@ -37,14 +37,14 @@ function fondoDecorativo() {
     `;
 }
 
-// Placeholder elegante y claramente marcado para reemplazar por una imagen real.
-function placeholderImagen(clasesExtra, etiqueta) {
+// Ilustracion decorativa con SVG puro (icono de crecimiento/progreso).
+// Reemplaza el placeholder punteado por algo terminado, sin dependencias.
+function ilustracionProgreso(clasesExtra, clasesIcono = "text-indigo-300") {
     return `
-        <div class="${clasesExtra} rounded-3xl border-2 border-dashed border-slate-200 bg-white/40 backdrop-blur-sm flex flex-col items-center justify-center gap-2 text-slate-300">
-            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        <div class="${clasesExtra} rounded-3xl bg-gradient-to-br from-indigo-50 to-blue-50 flex items-center justify-center ${clasesIcono}">
+            <svg class="w-2/5 h-2/5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 17l6-6 4 4 8-8M21 7h-4m4 0v4"/>
             </svg>
-            <span class="text-xs font-medium text-slate-400">${etiqueta}</span>
         </div>
     `;
 }
@@ -305,7 +305,7 @@ function mostrarEstadoVacio(app) {
 
             <div class="relative z-10 -mt-10 max-w-xl mx-auto">
                 <div class="bg-white/80 backdrop-blur-xl border border-white/60 rounded-3xl shadow-xl shadow-slate-200/50 px-8 py-12 text-center">
-                    ${placeholderImagen("w-40 h-40 mx-auto mb-8", "Ilustración")}
+                    ${ilustracionProgreso("w-40 h-40 mx-auto mb-8")}
 
                     <h2 class="text-2xl font-bold text-slate-900 mb-3">
                         Aún no tienes progreso
@@ -416,7 +416,7 @@ function renderizar(app, progreso) {
                             </svg>
                         </a>
                     </div>
-                    ${placeholderImagen("hidden md:flex w-48 h-32 border-white/20 bg-white/5 text-white/30", "Ilustración")}
+                    ${ilustracionProgreso("hidden md:flex w-48 h-32 !bg-white/5", "text-white/40")}
                 </div>
             </section>
 
