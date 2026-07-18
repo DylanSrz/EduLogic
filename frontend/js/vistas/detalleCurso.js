@@ -71,7 +71,7 @@ export async function vistaDetalleCurso(app, params) {
     const sinSesion = !haySesion();
 
     const contenedor = document.createElement("div");
-    contenedor.className = "max-w-5xl mx-auto px-6 py-10";
+    contenedor.className = "max-w-5xl mx-auto px-4 md:px-6 py-10";
     contenedor.innerHTML = `
         <a
             href="#/cursos"
@@ -86,7 +86,7 @@ export async function vistaDetalleCurso(app, params) {
                 ${escapeHTML(curso.nivel)}
             </span>
 
-            <h1 class="text-4xl font-bold text-gray-900 mb-4">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 ${escapeHTML(curso.titulo)}
             </h1>
             <p class="text-lg leading-9 text-gray-600 max-w-3xl mt-5">
@@ -159,10 +159,10 @@ export async function vistaDetalleCurso(app, params) {
             if (sinSesion) {
                 // Bloqueada: el enlace lleva al registro, no a la lección
                 enlace.href = "#/registro";
-                enlace.className = "flex items-center gap-4 p-5 bg-gray-50 rounded-xl border-2 border-gray-300 opacity-75 hover:opacity-100 transition";
+                enlace.className = "flex flex-wrap items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-gray-50 rounded-xl border-2 border-gray-300 opacity-75 hover:opacity-100 transition";
             } else {
                 enlace.href = `#/lecciones/${leccion.id}`;
-                enlace.className = "flex items-center gap-4 p-5 bg-white rounded-xl border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all";
+                enlace.className = "flex flex-wrap items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-white rounded-xl border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all";
             }
 
             const numero = document.createElement("span");

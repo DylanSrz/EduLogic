@@ -203,7 +203,7 @@ async function render() {
     appOut.appendChild(wrapper);
 
     const cont = document.createElement("div");
-    cont.className = "max-w-6xl mx-auto px-8 py-8";
+    cont.className = "max-w-6xl mx-auto px-4 md:px-8 py-8";
     main.appendChild(cont);
 
     try {
@@ -233,7 +233,7 @@ async function renderCursos(cont) {
     estado.cursos = await apiGet("/cursos");
 
     cont.innerHTML = `
-        <div class="flex items-center justify-between mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">Mis Cursos</h1>
                 <p class="text-gray-500 text-sm mt-1">Gestiona el contenido de tus cursos.</p>
@@ -346,12 +346,12 @@ async function renderConstructor(cont) {
             <span class="text-gray-600 font-medium">${escapeHTML(curso.titulo)}</span>
         </div>
 
-        <div class="flex items-start justify-between mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900">${escapeHTML(curso.titulo)}</h1>
                 <p class="text-gray-500 text-sm mt-1">Construye el contenido del curso: lecciones y sus cuestionarios.</p>
             </div>
-            <div class="bg-white rounded-xl border-2 border-gray-900 shadow-ludica-sm px-5 py-3 shrink-0 text-center">
+            <div class="bg-white rounded-xl border-2 border-gray-900 shadow-ludica-sm px-5 py-3 shrink-0 self-start text-center">
                 <div class="text-2xl font-bold text-gray-900">${totalLecciones}</div>
                 <div class="text-gray-400 text-xs">${totalLecciones === 1 ? "lección" : "lecciones"}</div>
             </div>

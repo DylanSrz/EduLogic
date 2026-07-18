@@ -44,7 +44,7 @@ function crearHero() {
         <span class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm text-white font-bold text-sm px-4 py-1.5 rounded-full mb-6 ring-1 ring-white/25">
             ⚡ Aprende STEM desde cero
         </span>
-        <h2 class="font-display text-5xl md:text-7xl font-bold mb-6 leading-[1.05]">
+        <h2 class="font-display text-4xl sm:text-5xl md:text-7xl font-bold mb-6 leading-[1.05]">
             Aprender lógica también<br class="hidden md:block">
             puede ser <span class="relative inline-block text-amber-300">un juego<svg class="absolute -bottom-2 left-0 w-full text-purple-400" viewBox="0 0 200 12" fill="none" aria-hidden="true"><path d="M3 9c50-9 100-9 194-3" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></svg></span>
         </h2>

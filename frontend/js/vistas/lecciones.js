@@ -77,7 +77,7 @@ export async function vistaLeccion(app, parametros) {
                 ← Volver al curso
             </a>
 
-            <h1 class="text-4xl font-bold text-gray-900 mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
                 ${escapeHTML(leccion.titulo)}
             </h1>
 
@@ -138,7 +138,7 @@ export async function vistaLeccion(app, parametros) {
         const btnSiguiente = document.createElement("a");
         btnSiguiente.href = `#/lecciones/${siguiente.id}`;
         btnSiguiente.textContent = "Siguiente lección →";
-        btnSiguiente.className = "ml-auto text-blue-600 hover:text-blue-700 font-medium px-4 py-3";
+        btnSiguiente.className = "sm:ml-auto text-blue-600 hover:text-blue-700 font-bold px-4 py-3";
         acciones.appendChild(btnSiguiente);
     }
 }

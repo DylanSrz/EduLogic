@@ -76,7 +76,7 @@ export function vistaRegistro(app) {
     app.innerHTML = "";
 
     const contenedor = document.createElement("div");
-    contenedor.className = "min-h-screen bg-gray-50 flex items-center justify-center p-8";
+    contenedor.className = "min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-8";
 
     contenedor.innerHTML = `
         <div class="w-full max-w-md bg-white rounded-3xl border-2 border-gray-900 shadow-ludica p-8">
