@@ -1,0 +1,13 @@
+{
+  "name": "edulogic",
+  "version": "1.0.0",
+  "description": "Levantamiento unificado de EduLogic: backend (FastAPI) + frontend (Tailwind + JS Vanilla) con un solo comando, multiplataforma.",
+  "private": true,
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "dev": "node scripts/dev.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
