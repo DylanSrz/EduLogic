@@ -3,10 +3,10 @@ import { borrarToken, obtenerToken } from "./api.js";
 const RUTAS_PROTEGIDAS_SESION = [
     { patron: "lecciones/:id" },
     { patron: "cuestionarios/:id" },
-    { patron: "mi-progreso" },
 ];
 
 const RUTAS_PROTEGIDAS_ROL = {
+    "mi-progreso": ["estudiante"],
     "panel-profesor": ["profesor", "admin"],
     "panel-admin": ["admin"],
 };
@@ -179,7 +179,7 @@ export function actualizarHeader() {
     const rol = rolActual();
 
     if (sesion) {
-        if (rol === "estudiante" || rol === "profesor") {
+        if (rol === "estudiante") {
             const enlaceProgreso = document.createElement("a");
             enlaceProgreso.href = "#/mi-progreso";
             enlaceProgreso.className = "text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors";
