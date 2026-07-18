@@ -62,6 +62,12 @@ export async function vistaDetalleCurso(app, params) {
             .map(l => l.leccion_id)
     );
 
+    // Mapa leccion_id -> cuestionario (con su mejor_puntaje). El dato ya viene
+    // en la misma respuesta de /progreso/cursos/{id}: no hay peticiones extra.
+    const cuestionarioPorLeccion = new Map(
+        (progreso ? progreso.cuestionarios : []).map(c => [c.leccion_id, c])
+    );
+
     const sinSesion = !haySesion();
 
     const contenedor = document.createElement("div");
@@ -181,7 +187,31 @@ export async function vistaDetalleCurso(app, params) {
                 estado.title = "Pendiente";
             }
 
-            enlace.append(numero, titulo, estado);
+            // Insignia del mejor puntaje: solo con sesión de estudiante y si la
+            // lección tiene cuestionario. mejor_puntaje null = nunca lo intentó.
+            const cuestionario = cuestionarioPorLeccion.get(leccion.id);
+            if (esEstudiante && cuestionario) {
+                const insignia = document.createElement("span");
+                insignia.className = "flex-shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full";
+                if (cuestionario.mejor_puntaje !== null && cuestionario.mejor_puntaje !== undefined) {
+                    const pct = cuestionario.mejor_puntaje;
+                    const color = pct >= 80
+                        ? "bg-green-100 text-green-700"
+                        : pct >= 50
+                        ? "bg-amber-100 text-amber-700"
+                        : "bg-red-100 text-red-700";
+                    insignia.className += " " + color;
+                    insignia.textContent = `Mejor: ${pct}%`;
+                    insignia.title = "Tu mejor puntaje en el cuestionario";
+                } else {
+                    insignia.className += " bg-gray-100 text-gray-400";
+                    insignia.textContent = "Quiz sin intentos";
+                    insignia.title = "Aún no has presentado este cuestionario";
+                }
+                enlace.append(numero, titulo, insignia, estado);
+            } else {
+                enlace.append(numero, titulo, estado);
+            }
 
             listaLecciones.appendChild(enlace);
 
