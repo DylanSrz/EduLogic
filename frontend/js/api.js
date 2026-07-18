@@ -1,4 +1,7 @@
-const URL_BASE = "http://127.0.0.1:8000";
+// La URL del backend depende de dónde corra el frontend: en desarrollo
+// apunta al uvicorn local; desplegado, a la API en producción (Render).
+const ES_LOCAL = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const URL_BASE = ES_LOCAL ? "http://127.0.0.1:8000" : "https://api.edulogic.pro";
 
 export function guardarToken(token) {
     localStorage.setItem("token", token);
