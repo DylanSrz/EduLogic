@@ -1,5 +1,5 @@
 import { registrarRuta, navegar } from "./router.js";
-import { actualizarHeader } from "./sesion.js";
+import { actualizarHeader, iniciarMenuMovil } from "./sesion.js";
 import { vistaInicio } from "./vistas/inicio.js";
 import { vistaLogin } from "./vistas/login.js";
 import { vistaRegistro } from "./vistas/registro.js";
@@ -30,4 +30,5 @@ window.addEventListener("hashchange", () => {
 window.addEventListener("DOMContentLoaded", () => {
     navegar();
     actualizarHeader();
+    iniciarMenuMovil();
 });

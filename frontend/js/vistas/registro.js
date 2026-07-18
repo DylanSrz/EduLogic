@@ -76,10 +76,10 @@ export function vistaRegistro(app) {
     app.innerHTML = "";
 
     const contenedor = document.createElement("div");
-    contenedor.className = "min-h-screen bg-gray-50 flex items-center justify-center p-8";
+    contenedor.className = "min-h-screen bg-gray-50 flex items-center justify-center p-4 sm:p-8";
 
     contenedor.innerHTML = `
-        <div class="w-full max-w-md bg-white rounded-xl shadow-md p-8">
+        <div class="w-full max-w-md bg-white rounded-3xl border-2 border-gray-900 shadow-ludica p-8">
             <h1 class="text-2xl font-bold text-gray-900 text-center mb-2">Crear cuenta</h1>
             <p class="text-gray-500 text-sm text-center mb-6">Ingresa tus datos para registrarte en EduLogic.</p>
 
@@ -92,7 +92,7 @@ export function vistaRegistro(app) {
                         name="nombre"
                         placeholder="Tu nombre"
                         autocomplete="name"
-                        class="w-full px-4 py-4 rounded-lg border border-gray-300 outline-none text-sm"
+                        class="w-full px-4 py-4 rounded-xl border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 text-sm"
                         style="border-width:1px;border-style:solid;">
                 </div>
 
@@ -104,7 +104,7 @@ export function vistaRegistro(app) {
                         name="email"
                         placeholder="estudiante@ejemplo.com"
                         autocomplete="email"
-                        class="w-full px-4 py-4 rounded-lg border border-gray-300 outline-none text-sm"
+                        class="w-full px-4 py-4 rounded-xl border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 text-sm"
                         style="border-width:1px;border-style:solid;">
                 </div>
 
@@ -131,7 +131,7 @@ export function vistaRegistro(app) {
                             name="contrasena"
                             placeholder="Minimo 8 caracteres"
                             autocomplete="new-password"
-                            class="w-full px-4 py-4 rounded-lg border border-gray-300 outline-none text-sm pr-12"
+                            class="w-full px-4 py-4 rounded-xl border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 text-sm pr-12"
                             style="border-width:1px;border-style:solid;">
                         <button
                             type="button"
@@ -155,7 +155,7 @@ export function vistaRegistro(app) {
                             name="confirmar"
                             placeholder="Repite tu contrasena"
                             autocomplete="new-password"
-                            class="w-full px-4 py-4 rounded-lg border border-gray-300 outline-none text-sm pr-12"
+                            class="w-full px-4 py-4 rounded-xl border border-gray-300 outline-none focus:ring-2 focus:ring-blue-200 text-sm pr-12"
                             style="border-width:1px;border-style:solid;">
                         <button
                             type="button"
@@ -172,7 +172,7 @@ export function vistaRegistro(app) {
                 <button
                     type="submit"
                     id="btnRegistroSubmit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 rounded-lg transition-colors cursor-pointer text-sm">
+                    class="w-full bg-blue-600 text-white font-bold py-4 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none active:scale-[0.98] transition-all cursor-pointer text-sm">
                     Crear cuenta
                 </button>
             </form>
