@@ -183,7 +183,7 @@ function htmlProgreso(estado) {
         <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
             <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: ${porcentaje}%"></div>
         </div>
-        <div class="flex justify-center gap-2 mt-3">${dots}</div>
+        <div class="flex flex-wrap justify-center gap-2 mt-3">${dots}</div>
     `;
 }
 
