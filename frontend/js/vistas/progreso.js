@@ -1,29 +1,108 @@
 import { apiGet } from "../api.js";
+import { escapeHTML } from "../ui.js";
 
 export async function vistaProgreso(app) {
 
     app.innerHTML = "";
+    mostrarLoading(app);
+
     let progreso;
 
     try {
         progreso = await apiGet("/progreso/resumen");
-    } 
-    
+    }
+
     catch (error) {
-        app.innerHTML = `
-            <div class="max-w-3xl mx-auto py-12">
-                <h2 class="text-2xl font-bold text-red-600">
-                    Error al cargar el progreso
-                </h2>
-
-                <p class="mt-2 text-gray-600">
-                    ${error.message}
-                </p>
-            </div>
-        `;
-
+        mostrarError(app, error);
         return;
     }
+
+    renderizar(app, progreso);
+}
+
+function mostrarLoading(app) {
+
+    const contenedor = document.createElement("div");
+    contenedor.className = "max-w-6xl mx-auto px-6 py-10";
+
+    contenedor.innerHTML = `
+        <div class="h-10 w-56 bg-gray-200 rounded animate-pulse mb-8"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+            ${Array.from({ length: 3 }, () => `
+                <div class="bg-white rounded-2xl shadow-md p-6 border border-gray-100 animate-pulse">
+                    <div class="h-4 bg-gray-200 rounded w-28 mb-4"></div>
+                    <div class="h-8 bg-gray-200 rounded w-16"></div>
+                </div>
+            `).join("")}
+        </div>
+
+        <div class="space-y-6">
+            ${Array.from({ length: 3 }, () => `
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 animate-pulse">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <div class="h-7 bg-gray-200 rounded w-48 mb-3"></div>
+                            <div class="h-6 bg-gray-200 rounded-full w-24"></div>
+                        </div>
+                        <div class="h-7 bg-gray-200 rounded w-14"></div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3 mb-5"></div>
+                    <div class="flex items-center justify-between">
+                        <div class="h-5 bg-gray-200 rounded w-40"></div>
+                        <div class="h-9 bg-blue-200 rounded-lg w-28"></div>
+                    </div>
+                </div>
+            `).join("")}
+        </div>
+    `;
+
+    app.appendChild(contenedor);
+}
+
+function mostrarError(app, error) {
+
+    app.innerHTML = "";
+
+    const contenedor = document.createElement("div");
+    contenedor.className = "max-w-3xl mx-auto py-24 text-center px-4";
+
+    contenedor.innerHTML = `
+        <div class="w-24 h-24 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center">
+            <svg class="w-12 h-12 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+            </svg>
+        </div>
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">
+            Error al cargar el progreso
+        </h2>
+
+        <p class="text-gray-500 mb-8 max-w-md mx-auto">
+            ${escapeHTML(error.message)}
+        </p>
+
+        <button
+            id="btn-reintentar"
+            class="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-xl hover:bg-blue-700 active:scale-95 transition-all cursor-pointer font-medium"
+        >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Reintentar
+        </button>
+    `;
+
+    app.appendChild(contenedor);
+
+    contenedor.querySelector("#btn-reintentar").addEventListener("click", () => {
+        vistaProgreso(app);
+    });
+}
+
+function renderizar(app, progreso) {
+
+    app.innerHTML = "";
 
     if (progreso.length === 0) {
         app.innerHTML = `
@@ -124,11 +203,11 @@ export async function vistaProgreso(app) {
                 <div>
 
                     <h2 class="text-2xl font-bold text-gray-900">
-                        ${curso.titulo}
+                        ${escapeHTML(curso.titulo)}
                     </h2>
 
                     <span class="inline-block mt-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold">
-                        ${curso.nivel}
+                        ${escapeHTML(curso.nivel)}
                     </span>
 
                 </div>
