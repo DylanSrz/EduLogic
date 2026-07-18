@@ -31,7 +31,7 @@ function toast(mensaje, tipo = "exito") {
         ? "bg-red-600"
         : "bg-blue-600";
     const div = document.createElement("div");
-    div.className = `toast-notification fixed top-4 right-4 z-50 ${colores} text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300`;
+    div.className = `toast-notification fixed top-4 right-4 z-50 ${colores} text-white font-bold px-6 py-3 rounded-full border-2 border-gray-900 shadow-ludica-sm transition-all duration-300`;
     div.textContent = mensaje;
     document.body.appendChild(div);
     requestAnimationFrame(() => div.style.opacity = "1");
@@ -46,7 +46,7 @@ function modal(titulo, contenidoForm, onConfirmar) {
     overlay.className = "fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4";
     overlay.id = "modal-overlay";
     const card = document.createElement("div");
-    card.className = "bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto";
+    card.className = "bg-white rounded-2xl border-2 border-gray-900 shadow-ludica w-full max-w-lg max-h-[90vh] overflow-y-auto";
     const header = document.createElement("div");
     header.className = "flex items-center justify-between p-6 border-b";
     const h = document.createElement("h3");
@@ -66,12 +66,12 @@ function modal(titulo, contenidoForm, onConfirmar) {
     const footer = document.createElement("div");
     footer.className = "flex justify-end gap-3 p-6 border-t bg-gray-50 rounded-b-xl";
     const btnCancelar = document.createElement("button");
-    btnCancelar.className = "px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer";
+    btnCancelar.className = "px-4 py-2 text-gray-700 font-bold bg-white border-2 border-gray-900 rounded-full shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer";
     btnCancelar.textContent = "Cancelar";
     btnCancelar.addEventListener("click", () => overlay.remove());
     footer.appendChild(btnCancelar);
     const btnGuardar = document.createElement("button");
-    btnGuardar.className = "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer disabled:opacity-50";
+    btnGuardar.className = "px-4 py-2 bg-blue-600 text-white font-bold rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer disabled:opacity-50";
     btnGuardar.textContent = "Guardar";
     btnGuardar.addEventListener("click", async () => {
         btnGuardar.disabled = true;
@@ -102,7 +102,7 @@ function confirmar(mensaje, onAceptar) {
     overlay.className = "fixed inset-0 z-40 flex items-center justify-center bg-black/50 p-4";
     overlay.id = "confirm-overlay";
     const card = document.createElement("div");
-    card.className = "bg-white rounded-xl shadow-2xl w-full max-w-md";
+    card.className = "bg-white rounded-2xl border-2 border-gray-900 shadow-ludica w-full max-w-md";
     const body = document.createElement("div");
     body.className = "p-6 text-center";
     const icono = document.createElement("div");
@@ -117,7 +117,7 @@ function confirmar(mensaje, onAceptar) {
     const footer = document.createElement("div");
     footer.className = "flex justify-center gap-3 p-6 border-t bg-gray-50 rounded-b-xl";
     const btnCancelar = document.createElement("button");
-    btnCancelar.className = "px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer";
+    btnCancelar.className = "px-4 py-2 text-gray-700 font-bold bg-white border-2 border-gray-900 rounded-full shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer";
     btnCancelar.textContent = "Cancelar";
     btnCancelar.addEventListener("click", () => overlay.remove());
     footer.appendChild(btnCancelar);
@@ -178,37 +178,6 @@ function campoFormulario(label, tipo, valor = "", required = true) {
     return { grupo, input };
 }
 
-/* ------------------------------------------------------------------ */
-/*  SIDEBAR                                                           */
-/* ------------------------------------------------------------------ */
-function sidebarHTML() {
-    return `
-        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col shrink-0">
-            <div class="p-6 border-b border-gray-100">
-                <span class="text-2xl font-bold text-blue-600 tracking-tight">EduLogic</span>
-            </div>
-
-            <nav class="flex-1 px-3 pt-4">
-                <div class="text-[11px] text-gray-400 uppercase tracking-wider font-semibold mb-3 px-3">Menú</div>
-                <a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors mt-1 nav-link ${estado.vista === "cursos" ? "bg-blue-50 text-blue-700 font-medium" : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"}">
-                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                    Mis Cursos
-                </a>
-            </nav>
-
-            <div class="p-4 border-t border-gray-100" id="sidebar-perfil">
-                <div class="flex items-center gap-3 px-3 py-2">
-                    <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-sm font-semibold" id="sidebar-inicial"></div>
-                    <div class="text-sm" id="sidebar-info">
-                        <div class="font-medium text-gray-900" id="sidebar-nombre">Profesor</div>
-                        <div class="text-gray-400 text-xs" id="sidebar-email"></div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-    `;
-}
-
 function leerPayload() {
     const token = localStorage.getItem("token");
     if (!token) return null;
@@ -226,34 +195,12 @@ async function render() {
     if (!appOut) return;
 
     const wrapper = document.createElement("div");
-    wrapper.className = "flex h-screen bg-gray-50";
-    wrapper.innerHTML = sidebarHTML();
+    wrapper.className = "min-h-full bg-gray-50";
 
     const main = document.createElement("main");
-    main.className = "flex-1 overflow-y-auto";
     wrapper.appendChild(main);
     appOut.innerHTML = "";
     appOut.appendChild(wrapper);
-
-    const payload = leerPayload();
-    if (payload) {
-        // textContent (no innerHTML) porque nombre y email los escribió el usuario
-        const ini = wrapper.querySelector("#sidebar-inicial");
-        const nombre = wrapper.querySelector("#sidebar-nombre");
-        const email = wrapper.querySelector("#sidebar-email");
-        if (ini) ini.textContent = (payload.nombre || payload.email || "P")[0].toUpperCase();
-        if (nombre) nombre.textContent = payload.nombre || "Profesor";
-        if (email) email.textContent = payload.email || "";
-    }
-
-    wrapper.querySelectorAll(".nav-link").forEach(el => {
-        el.addEventListener("click", () => {
-            estado.vista = "cursos";
-            estado.curso = null;
-            estado.lecciones = [];
-            render();
-        });
-    });
 
     const cont = document.createElement("div");
     cont.className = "max-w-6xl mx-auto px-8 py-8";
@@ -271,7 +218,7 @@ async function render() {
                 <div class="text-red-500 text-5xl mb-4">!</div>
                 <h3 class="text-xl font-semibold text-gray-700 mb-2">Error al cargar datos</h3>
                 <p class="text-gray-500 mb-6" id="error-msg"></p>
-                <button id="btn-retry" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer">Reintentar</button>
+                <button id="btn-retry" class="bg-blue-600 text-white font-bold px-6 py-2 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer">Reintentar</button>
             </div>
         `;
         cont.querySelector("#error-msg").textContent = e.message;
@@ -291,7 +238,7 @@ async function renderCursos(cont) {
                 <h1 class="text-3xl font-bold text-gray-900">Mis Cursos</h1>
                 <p class="text-gray-500 text-sm mt-1">Gestiona el contenido de tus cursos.</p>
             </div>
-            <button id="btn-nuevo-curso" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer flex items-center gap-2">
+            <button id="btn-nuevo-curso" class="bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-bold border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Nuevo curso
             </button>
@@ -317,7 +264,7 @@ async function renderCursos(cont) {
         propios.forEach(curso => {
             const colores = COLORES_NIVEL[curso.nivel] || COLORES_NIVEL.basico;
             const card = document.createElement("div");
-            card.className = "bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all flex flex-col";
+            card.className = "bg-white rounded-2xl border-2 border-gray-900 shadow-ludica hover:translate-x-1 hover:translate-y-1 hover:shadow-ludica-sm transition-all duration-200 p-6 flex flex-col";
             card.innerHTML = `
                 <span class="inline-block ${colores.bg} ${colores.text} text-xs font-semibold px-3 py-1 rounded-full mb-3 self-start">${escapeHTML(capitalizar(curso.nivel))}</span>
                 <h3 class="text-lg font-semibold text-gray-900 mb-2">${escapeHTML(curso.titulo)}</h3>
@@ -404,7 +351,7 @@ async function renderConstructor(cont) {
                 <h1 class="text-3xl font-bold text-gray-900">${escapeHTML(curso.titulo)}</h1>
                 <p class="text-gray-500 text-sm mt-1">Construye el contenido del curso: lecciones y sus cuestionarios.</p>
             </div>
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 px-5 py-3 shrink-0 text-center">
+            <div class="bg-white rounded-xl border-2 border-gray-900 shadow-ludica-sm px-5 py-3 shrink-0 text-center">
                 <div class="text-2xl font-bold text-gray-900">${totalLecciones}</div>
                 <div class="text-gray-400 text-xs">${totalLecciones === 1 ? "lección" : "lecciones"}</div>
             </div>
@@ -434,7 +381,7 @@ async function renderConstructor(cont) {
                 : "Sin contenido.";
 
             bloque.innerHTML = `
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="bg-white rounded-2xl border-2 border-gray-900 shadow-ludica overflow-hidden">
                     <div class="flex items-center justify-between p-5 hover:bg-gray-50/50 transition-colors">
                         <div class="flex items-center gap-3 cursor-pointer toggle-leccion flex-1 min-w-0">
                             <span class="bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-md shrink-0">Lección ${idx + 1}</span>

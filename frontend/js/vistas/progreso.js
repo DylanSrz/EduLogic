@@ -65,7 +65,7 @@ function anilloProgreso(porcentaje) {
 // Hero superior: panel de gradiente con anillo, resumen humano y decoracion.
 function heroHTML(promedio, leccionesCompletadas, totalLecciones, cursosActivos) {
     return `
-        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-indigo-800 text-white shadow-2xl shadow-indigo-600/25">
+        <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-indigo-800 text-white border-2 border-gray-900 shadow-ludica">
             <div class="pointer-events-none absolute -top-16 -right-10 w-72 h-72 bg-white/10 rounded-full blur-2xl"></div>
             <div class="pointer-events-none absolute -bottom-24 left-10 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl"></div>
             <div class="pointer-events-none absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 26px 26px;"></div>
@@ -111,7 +111,7 @@ function tileEstadistica(etiqueta, valor, color, iconoPath) {
     const chip = acento.split(" ").slice(2).join(" "); // text + bg
 
     return `
-        <div class="group relative bg-white/70 backdrop-blur-xl border border-white/60 rounded-2xl shadow-xl shadow-slate-200/50 p-6 hover:-translate-y-1 hover:shadow-2xl hover:shadow-slate-300/50 transition-all duration-300">
+        <div class="group relative bg-white border-2 border-gray-900 rounded-2xl shadow-ludica p-6 hover:translate-x-1 hover:translate-y-1 hover:shadow-ludica-sm transition-all duration-200">
             <div class="flex items-start justify-between">
                 <div>
                     <p class="text-sm font-medium text-slate-500">${etiqueta}</p>
@@ -132,7 +132,7 @@ function tarjetaCurso(curso, indice) {
 
     return `
         <article
-            class="group relative bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-200/70 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+            class="group relative bg-white rounded-2xl border-2 border-gray-900 shadow-ludica hover:translate-x-1 hover:translate-y-1 hover:shadow-ludica-sm transition-all duration-200 overflow-hidden"
             style="animation: fadeInUp 0.5s ease-out ${indice * 0.07}s both;"
         >
             <div class="p-6 md:p-7">
@@ -172,7 +172,7 @@ function tarjetaCurso(curso, indice) {
 
                 <a
                     href="#/cursos/${curso.curso_id}"
-                    class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold px-4 py-2.5 rounded-xl active:scale-[0.98] transition-all"
+                    class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold px-4 py-2.5 rounded-full border-2 border-gray-900 active:scale-[0.98] transition-all"
                 >
                     ${completo ? "Repasar curso" : "Continuar aprendiendo"}
                     <svg class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -289,7 +289,7 @@ function mostrarEstadoVacio(app) {
         ${fondoDecorativo()}
         <div class="relative max-w-4xl mx-auto px-6 py-16 md:py-20">
 
-            <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-indigo-800 text-white shadow-2xl shadow-indigo-600/25 px-8 py-12 md:px-12 text-center">
+            <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-600 via-indigo-600 to-indigo-800 text-white border-2 border-gray-900 shadow-ludica px-8 py-12 md:px-12 text-center">
                 <div class="pointer-events-none absolute inset-0 opacity-[0.07]" style="background-image: radial-gradient(circle at 1px 1px, #fff 1px, transparent 0); background-size: 26px 26px;"></div>
                 <div class="relative">
                     <span class="inline-flex items-center gap-2 text-xs font-semibold text-white/90 bg-white/10 ring-1 ring-white/20 backdrop-blur px-3 py-1 rounded-full">
@@ -304,7 +304,7 @@ function mostrarEstadoVacio(app) {
             </section>
 
             <div class="relative z-10 -mt-10 max-w-xl mx-auto">
-                <div class="bg-white/80 backdrop-blur-xl border border-white/60 rounded-3xl shadow-xl shadow-slate-200/50 px-8 py-12 text-center">
+                <div class="bg-white border-2 border-gray-900 rounded-3xl shadow-ludica px-8 py-12 text-center">
                     ${ilustracionProgreso("w-40 h-40 mx-auto mb-8")}
 
                     <h2 class="text-2xl font-bold text-slate-900 mb-3">
@@ -317,7 +317,7 @@ function mostrarEstadoVacio(app) {
 
                     <a
                         href="#/cursos"
-                        class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold px-6 py-3 rounded-xl shadow-sm active:scale-95 transition-all"
+                        class="inline-flex items-center gap-2 bg-blue-600 text-white font-bold px-6 py-3 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:scale-95 transition-all"
                     >
                         Explorar cursos
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -398,7 +398,7 @@ function renderizar(app, progreso) {
                 </div>
             </div>
 
-            <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 text-white mt-16 px-8 py-10 md:px-12">
+            <section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 text-white border-2 border-gray-900 shadow-ludica mt-16 px-8 py-10 md:px-12">
                 <div class="pointer-events-none absolute -top-16 -right-10 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl"></div>
                 <div class="relative grid md:grid-cols-[1fr_auto] items-center gap-8">
                     <div class="text-center md:text-left">
@@ -408,7 +408,7 @@ function renderizar(app, progreso) {
                         </p>
                         <a
                             href="#/cursos"
-                            class="inline-flex items-center gap-2 mt-6 bg-white text-slate-900 font-semibold px-6 py-3 rounded-xl hover:bg-slate-100 active:scale-95 transition-all shadow-lg"
+                            class="inline-flex items-center gap-2 mt-6 bg-amber-300 text-gray-900 font-bold px-6 py-3 rounded-full border-2 border-gray-900 shadow-[4px_4px_0_0_rgba(255,255,255,0.6)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none active:scale-95 transition-all"
                         >
                             Explorar catálogo
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

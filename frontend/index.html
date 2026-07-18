@@ -9,14 +9,32 @@
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50">
 
-    <header class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-            <h1 class="text-2xl font-bold text-blue-600">EduLogic</h1>
-            <nav class="flex items-center gap-4 text-sm">
-                <a href="#/" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors">Inicio</a>
-                <a href="#/cursos" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors">Cursos</a>
-                <a href="#/login" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">Iniciar sesión</a>
-                <a href="#/registro" class="text-blue-600 hover:underline px-3 py-2">Regístrate</a>
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b-2 border-gray-900">
+        <div class="h-1.5 bg-gradient-to-r from-blue-500 via-amber-400 to-purple-500"></div>
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+            <a href="#/" class="group flex items-center gap-2.5">
+                <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-600 border-2 border-gray-900 shadow-ludica-sm flex items-center justify-center group-hover:-rotate-6 group-hover:translate-x-[2px] group-hover:translate-y-[2px] group-hover:shadow-none transition-all">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </span>
+                <h1 class="font-display text-2xl font-bold text-blue-700 leading-none">EduLogic<span class="text-purple-500">.</span></h1>
+            </a>
+            <button id="btn-menu-movil" type="button" aria-label="Abrir menú" aria-expanded="false"
+                class="md:hidden w-10 h-10 rounded-xl border-2 border-gray-100 text-gray-600 hover:text-blue-700 hover:bg-blue-50 flex items-center justify-center transition-colors cursor-pointer">
+                <svg class="icono-abrir w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <svg class="icono-cerrar hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+            <nav id="menu-principal"
+                class="hidden md:flex absolute md:static top-full left-0 right-0 flex-col md:flex-row items-stretch md:items-center md:justify-end gap-2 md:gap-1 bg-white md:bg-transparent border-b-2 md:border-0 border-gray-100 px-4 py-4 md:p-0 shadow-lg shadow-blue-900/5 md:shadow-none text-sm">
+                <a href="#/" class="font-semibold text-gray-600 hover:text-blue-700 px-3.5 py-2 rounded-full hover:bg-blue-50 transition-colors">Inicio</a>
+                <a href="#/cursos" class="font-semibold text-gray-600 hover:text-blue-700 px-3.5 py-2 rounded-full hover:bg-blue-50 transition-colors">Cursos</a>
+                <a href="#/login" class="font-semibold text-gray-600 hover:text-blue-700 px-3.5 py-2 rounded-full hover:bg-blue-50 transition-colors">Iniciar sesión</a>
+                <a href="#/registro" class="bg-blue-600 text-white font-bold px-5 py-2 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none active:scale-95 transition-all text-center">Regístrate</a>
             </nav>
         </div>
     </header>
@@ -24,8 +42,11 @@
     <main id="app" class="flex-1">
     </main>
 
-    <footer class="bg-white border-t border-gray-200 py-4">
-        <p class="text-center text-gray-500 text-sm">© 2026 EduLogic</p>
+    <footer class="bg-white border-t-2 border-gray-900 py-6">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-2">
+            <p class="text-gray-500 text-sm font-semibold">© 2026 EduLogic</p>
+            <p class="text-gray-400 text-sm">Aprender también es un juego 🎈</p>
+        </div>
     </footer>
 
     <script type="module" src="./js/app.js"></script>

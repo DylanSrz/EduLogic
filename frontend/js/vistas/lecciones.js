@@ -81,7 +81,7 @@ export async function vistaLeccion(app, parametros) {
                 ${escapeHTML(leccion.titulo)}
             </h1>
 
-            <article class="bg-white rounded-xl shadow-md p-8">
+            <article class="bg-white rounded-2xl border-2 border-gray-900 shadow-ludica p-8">
                 <p class="text-gray-700 leading-8 text-lg whitespace-pre-line" id="leccion-contenido"></p>
             </article>
 
@@ -101,18 +101,18 @@ export async function vistaLeccion(app, parametros) {
         const btnCompletar = document.createElement("button");
         if (yaCompletada) {
             btnCompletar.textContent = "✔️ Lección completada";
-            btnCompletar.className = "bg-green-100 text-green-700 px-6 py-3 rounded-lg font-medium cursor-default";
+            btnCompletar.className = "bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border-2 border-green-600 cursor-default";
             btnCompletar.disabled = true;
         } else {
             btnCompletar.textContent = "Marcar como completada";
-            btnCompletar.className = "bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors cursor-pointer";
+            btnCompletar.className = "bg-green-600 text-white font-bold px-6 py-3 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer";
             btnCompletar.addEventListener("click", async () => {
                 btnCompletar.disabled = true;
                 btnCompletar.textContent = "Guardando...";
                 try {
                     const r = await apiPost(`/lecciones/${leccion.id}/completar`);
                     btnCompletar.textContent = `✔️ Completada — avance del curso: ${r.porcentaje}%`;
-                    btnCompletar.className = "bg-green-100 text-green-700 px-6 py-3 rounded-lg font-medium cursor-default";
+                    btnCompletar.className = "bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border-2 border-green-600 cursor-default";
                 } catch (e) {
                     btnCompletar.disabled = false;
                     btnCompletar.textContent = "Marcar como completada";
@@ -129,7 +129,7 @@ export async function vistaLeccion(app, parametros) {
         const btnQuiz = document.createElement("a");
         btnQuiz.href = `#/cuestionarios/${cuestionario.id}`;
         btnQuiz.textContent = "🧩 Presentar cuestionario";
-        btnQuiz.className = "bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors";
+        btnQuiz.className = "bg-purple-500 text-white font-bold px-6 py-3 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all";
         acciones.appendChild(btnQuiz);
     }
 

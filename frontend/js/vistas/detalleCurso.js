@@ -80,7 +80,7 @@ export async function vistaDetalleCurso(app, params) {
             ← Volver al catálogo
         </a>
 
-        <section class="bg-white rounded-2xl shadow-md border border-gray-100 p-8 mb-10">
+        <section class="bg-white rounded-2xl border-2 border-gray-900 shadow-ludica p-8 mb-10">
 
             <span class="inline-flex items-center px-4 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-5">
                 ${escapeHTML(curso.nivel)}
@@ -159,10 +159,10 @@ export async function vistaDetalleCurso(app, params) {
             if (sinSesion) {
                 // Bloqueada: el enlace lleva al registro, no a la lección
                 enlace.href = "#/registro";
-                enlace.className = "flex items-center gap-4 p-5 bg-gray-50 rounded-xl border border-gray-200 opacity-75 hover:opacity-100 transition";
+                enlace.className = "flex items-center gap-4 p-5 bg-gray-50 rounded-xl border-2 border-gray-300 opacity-75 hover:opacity-100 transition";
             } else {
                 enlace.href = `#/lecciones/${leccion.id}`;
-                enlace.className = "flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-md transition";
+                enlace.className = "flex items-center gap-4 p-5 bg-white rounded-xl border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all";
             }
 
             const numero = document.createElement("span");

@@ -194,7 +194,7 @@ function htmlPregunta(estado) {
     const opciones = pregunta.opciones.map(o => {
         const sel = seleccionada === o.id;
         return `
-            <div class="flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all ${sel ? "border-blue-500 bg-blue-50 ring-2 ring-blue-500" : "border-gray-200 hover:border-blue-300 hover:bg-gray-50"}"
+            <div class="flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${sel ? "border-gray-900 bg-blue-50 shadow-ludica-sm" : "border-gray-300 hover:border-gray-900 hover:bg-blue-50"}"
                  data-pregunta-id="${pregunta.id}" data-opcion-id="${o.id}" data-opcion>
                 <div class="w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5 flex items-center justify-center transition-all ${sel ? "border-blue-500" : "border-gray-300"}">
                     ${sel ? '<div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>' : ''}
@@ -205,7 +205,7 @@ function htmlPregunta(estado) {
     }).join("");
 
     return `
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8" style="animation: fadeInUp 0.3s ease-out both;">
+        <div class="bg-white rounded-2xl border-2 border-gray-900 shadow-ludica p-6 md:p-8" style="animation: fadeInUp 0.3s ease-out both;">
             <div class="flex items-center gap-3 mb-5">
                 <span class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-bold text-sm flex items-center justify-center">${estado.preguntaActual + 1}</span>
                 <h3 class="text-lg md:text-xl font-semibold text-gray-900 leading-relaxed">${escapeHTML(pregunta.enunciado)}</h3>
@@ -222,18 +222,18 @@ function htmlNavegacion(estado) {
     const todasRespondidas = Object.keys(estado.respuestas).length === total;
 
     const anterior = esPrimera ? "" : `
-        <button class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 active:scale-95 transition-all cursor-pointer btn-anterior">
+        <button class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full border-2 border-gray-900 bg-white text-gray-700 font-bold shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:scale-95 transition-all cursor-pointer btn-anterior">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
             Anterior
         </button>
     `;
 
     const siguiente = esUltima
-        ? `<button class="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium transition-all cursor-pointer btn-enviar ${todasRespondidas ? "bg-blue-600 text-white hover:bg-blue-700 active:scale-95" : "bg-gray-200 text-gray-400 cursor-not-allowed"}" ${todasRespondidas ? "" : "disabled"}>
+        ? `<button class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-bold transition-all cursor-pointer btn-enviar ${todasRespondidas ? "bg-blue-600 text-white border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:scale-95" : "bg-gray-200 text-gray-400 border-2 border-gray-300 cursor-not-allowed"}" ${todasRespondidas ? "" : "disabled"}>
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Enviar respuestas
             </button>`
-        : `<button class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl bg-blue-600 text-white font-medium hover:bg-blue-700 active:scale-95 transition-all cursor-pointer btn-siguiente">
+        : `<button class="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-blue-600 text-white font-bold border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:scale-95 transition-all cursor-pointer btn-siguiente">
                 Siguiente
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
             </button>`;
@@ -278,14 +278,14 @@ function bindOpciones(container, estado) {
 
             const todas = opciones.querySelectorAll(`[data-pregunta-id="${preguntaId}"]`);
             todas.forEach(o => {
-                o.className = "flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all border-gray-200 hover:border-blue-300 hover:bg-gray-50";
+                o.className = "flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all border-gray-300 hover:border-gray-900 hover:bg-blue-50";
                 const dot = o.querySelector("div:first-child");
                 if (dot) { dot.className = "w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5 flex items-center justify-center transition-all border-gray-300"; dot.innerHTML = ""; }
                 const txt = o.querySelector("span");
                 if (txt) txt.className = "text-gray-700 leading-relaxed";
             });
 
-            el.className = "flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-all border-blue-500 bg-blue-50 ring-2 ring-blue-500";
+            el.className = "flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all border-gray-900 bg-blue-50 shadow-ludica-sm";
             const dot = el.querySelector("div:first-child");
             if (dot) { dot.className = "w-5 h-5 rounded-full border-2 flex-shrink-0 mt-0.5 flex items-center justify-center transition-all border-blue-500"; dot.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>'; }
             const txt = el.querySelector("span");
@@ -320,7 +320,7 @@ async function manejarEnvio(container, estado) {
 
     estado.enviando = true;
     btn.disabled = true;
-    btn.className = "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium bg-blue-400 text-white cursor-wait";
+    btn.className = "inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-bold bg-blue-400 text-white border-2 border-gray-900 cursor-wait";
     btn.innerHTML = `
         <svg class="w-4 h-4 animate-spin" style="animation: spin 1s linear infinite;" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -361,7 +361,7 @@ async function manejarEnvio(container, estado) {
         }
 
         btn.disabled = false;
-        btn.className = "inline-flex items-center gap-2 px-6 py-2.5 rounded-xl font-medium bg-blue-600 text-white hover:bg-blue-700 active:scale-95 transition-all cursor-pointer btn-enviar";
+        btn.className = "inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-bold bg-blue-600 text-white border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:scale-95 transition-all cursor-pointer btn-enviar";
         btn.innerHTML = `
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -382,8 +382,8 @@ function renderizarFaseResultados(container, estado, resultado) {
 
     container.innerHTML = `
         <div class="text-center mb-10" style="animation: fadeInUp 0.4s ease-out both;">
-            <div class="w-32 h-32 mx-auto mb-5 rounded-full flex items-center justify-center ${c.fondo} ring-4 ${c.anillo}">
-                <span class="text-3xl font-bold ${c.texto}">${puntaje}%</span>
+            <div class="w-32 h-32 mx-auto mb-5 rounded-full flex items-center justify-center ${c.fondo} border-4 border-gray-900 shadow-ludica">
+                <span class="font-display text-3xl font-bold ${c.texto}">${puntaje}%</span>
             </div>
             <h2 class="text-2xl font-bold text-gray-900 mb-2">${msg}</h2>
             <p class="text-gray-500 text-lg">Acertaste ${correctas} de ${total_preguntas} pregunta${total_preguntas !== 1 ? "s" : ""}</p>
@@ -391,7 +391,7 @@ function renderizarFaseResultados(container, estado, resultado) {
 
         <div class="space-y-4 mb-8">
             ${retroalimentacion.map((p, i) => `
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6" style="animation: fadeInUp 0.3s ease-out ${i * 0.1 + 0.3}s both;">
+                <div class="bg-white rounded-2xl border-2 border-gray-900 shadow-ludica-sm p-6" style="animation: fadeInUp 0.3s ease-out ${i * 0.1 + 0.3}s both;">
                     <div class="flex items-start gap-3 mb-3">
                         <span class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center ${p.fue_correcta ? "bg-green-100" : "bg-red-100"}">
                             ${p.fue_correcta ? svgCheck() : svgX()}
@@ -416,19 +416,19 @@ function renderizarFaseResultados(container, estado, resultado) {
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3 justify-center" style="animation: fadeInUp 0.3s ease-out 0.6s both;">
-            <button class="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-xl hover:bg-blue-700 active:scale-95 transition-all cursor-pointer font-medium btn-reintentar">
+            <button class="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-2.5 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none active:scale-95 transition-all cursor-pointer font-bold btn-reintentar">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                 </svg>
                 Reintentar cuestionario
             </button>
-            <a href="#/lecciones/${estado.cuestionario.leccion_id}" class="inline-flex items-center justify-center gap-2 bg-white text-gray-700 border border-gray-300 px-6 py-2.5 rounded-xl hover:bg-gray-50 transition-all font-medium">
+            <a href="#/lecciones/${estado.cuestionario.leccion_id}" class="inline-flex items-center justify-center gap-2 bg-white text-gray-700 border-2 border-gray-900 px-6 py-2.5 rounded-full shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-bold">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
                 Volver a la lección
             </a>
-            <a href="#/mi-progreso" class="inline-flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-200 px-6 py-2.5 rounded-xl hover:bg-blue-50 transition-all font-medium">
+            <a href="#/mi-progreso" class="inline-flex items-center justify-center gap-2 bg-amber-300 text-gray-900 border-2 border-gray-900 px-6 py-2.5 rounded-full shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-bold">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                 </svg>
