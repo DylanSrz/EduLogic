@@ -96,31 +96,48 @@ export async function vistaLeccion(app, parametros) {
 
     const acciones = contenedor.querySelector("#acciones-leccion");
 
+    // Regla de negocio: si la leccion tiene cuestionario, completarla exige
+    // haberlo aprobado al 100% (mejor puntaje). El dato ya viene en el
+    // progreso del curso. Sin datos de progreso se muestra el boton igual:
+    // el backend valida la regla de todas formas (la interfaz es UX).
+    const puntajes = progreso ? progreso.cuestionarios : null;
+    const aproboCuestionario =
+        !cuestionario ||
+        !puntajes ||
+        puntajes.some(c => c.leccion_id === leccion.id && c.mejor_puntaje === 100);
+
     // Boton "Marcar como completada" — solo estudiantes (el backend igual lo exige)
     if (esEstudiante) {
-        const btnCompletar = document.createElement("button");
-        if (yaCompletada) {
-            btnCompletar.textContent = "✔️ Lección completada";
-            btnCompletar.className = "bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border-2 border-green-600 cursor-default";
-            btnCompletar.disabled = true;
+        if (!yaCompletada && !aproboCuestionario) {
+            const aviso = document.createElement("span");
+            aviso.textContent = "🔒 Aprueba el cuestionario al 100% para completar la lección";
+            aviso.className = "bg-amber-100 text-amber-800 font-bold text-sm px-5 py-3 rounded-full border-2 border-amber-400 text-center";
+            acciones.appendChild(aviso);
         } else {
-            btnCompletar.textContent = "Marcar como completada";
-            btnCompletar.className = "bg-green-600 text-white font-bold px-6 py-3 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer";
-            btnCompletar.addEventListener("click", async () => {
+            const btnCompletar = document.createElement("button");
+            if (yaCompletada) {
+                btnCompletar.textContent = "✔️ Lección completada";
+                btnCompletar.className = "bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border-2 border-green-600 cursor-default";
                 btnCompletar.disabled = true;
-                btnCompletar.textContent = "Guardando...";
-                try {
-                    const r = await apiPost(`/lecciones/${leccion.id}/completar`);
-                    btnCompletar.textContent = `✔️ Completada — avance del curso: ${r.porcentaje}%`;
-                    btnCompletar.className = "bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border-2 border-green-600 cursor-default";
-                } catch (e) {
-                    btnCompletar.disabled = false;
-                    btnCompletar.textContent = "Marcar como completada";
-                    alert(e.message);
-                }
-            });
+            } else {
+                btnCompletar.textContent = "Marcar como completada";
+                btnCompletar.className = "bg-green-600 text-white font-bold px-6 py-3 rounded-full border-2 border-gray-900 shadow-ludica-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all cursor-pointer";
+                btnCompletar.addEventListener("click", async () => {
+                    btnCompletar.disabled = true;
+                    btnCompletar.textContent = "Guardando...";
+                    try {
+                        const r = await apiPost(`/lecciones/${leccion.id}/completar`);
+                        btnCompletar.textContent = `✔️ Completada — avance del curso: ${r.porcentaje}%`;
+                        btnCompletar.className = "bg-green-100 text-green-700 font-bold px-6 py-3 rounded-full border-2 border-green-600 cursor-default";
+                    } catch (e) {
+                        btnCompletar.disabled = false;
+                        btnCompletar.textContent = "Marcar como completada";
+                        alert(e.message);
+                    }
+                });
+            }
+            acciones.appendChild(btnCompletar);
         }
-        acciones.appendChild(btnCompletar);
     }
 
     // Boton "Presentar cuestionario" — si la leccion tiene quiz.
