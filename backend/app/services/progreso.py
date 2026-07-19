@@ -16,7 +16,7 @@ from app.models.intento import Intento
 from app.models.leccion import Leccion
 from app.models.progreso import Progreso
 from app.models.usuario import Usuario
-from app.services.excepciones import RecursoNoEncontrado
+from app.services.excepciones import RecursoNoEncontrado, ReglaDeNegocioViolada
 from app.schemas.progreso import (
     LeccionCompletada,
     LeccionConEstado,
@@ -50,10 +50,29 @@ def _conteo_curso(db: Session, usuario: Usuario, curso_id: int):
 def marcar_completada(db: Session, usuario: Usuario, leccion_id: int) -> LeccionCompletada:
     """Marca una leccion como completada. Idempotente: marcarla dos veces no
     duplica registros ni cambia el resultado (ademas del chequeo, el
-    UniqueConstraint uq_progreso_usuario_leccion lo garantiza en la BD)."""
+    UniqueConstraint uq_progreso_usuario_leccion lo garantiza en la BD).
+
+    Regla de negocio (decision de equipo, 2026-07-18): si la leccion tiene
+    cuestionario, solo puede completarse tras aprobarlo con el 100% (cuenta
+    el mejor puntaje entre todos los intentos). Una leccion sin cuestionario
+    se completa libremente."""
     leccion = db.get(Leccion, leccion_id)
     if not leccion:
         raise RecursoNoEncontrado("Lección no encontrada.")
+
+    if leccion.cuestionario:
+        mejor = (
+            db.query(func.max(Intento.puntaje))
+            .filter(
+                Intento.usuario_id == usuario.id,
+                Intento.cuestionario_id == leccion.cuestionario.id,
+            )
+            .scalar()
+        )
+        if mejor is None or float(mejor) < 100:
+            raise ReglaDeNegocioViolada(
+                "Para completar esta lección debes aprobar su cuestionario con el 100%."
+            )
 
     existente = (
         db.query(Progreso)

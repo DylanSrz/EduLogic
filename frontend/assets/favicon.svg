@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <!-- Favicon de EduLogic: el rayo del logo sobre el tile degradado de la marca -->
+    <defs>
+        <linearGradient id="marca" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#3dc5d6"/>
+            <stop offset="1" stop-color="#28688d"/>
+        </linearGradient>
+    </defs>
+    <rect x="3" y="3" width="58" height="58" rx="16" fill="url(#marca)" stroke="#262220" stroke-width="4"/>
+    <path d="M35 12 L17 37 L29 37 L26 52 L46 27 L33 27 Z" fill="#ffffff"/>
+</svg>
