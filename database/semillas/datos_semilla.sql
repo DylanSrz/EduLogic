@@ -9,32 +9,32 @@ INSERT INTO usuarios
 VALUES
 ('Administrador General',
 'admin@edulogic.com',
-'$2b$12$rZvfZA2PBX4GJ6pP0HjaVu2CBF/VYR17My4RpJ8ehNso8sAHwYUB.',
+'$2b$12$rsKwKYUdyI5OY7JeHcrkcOYXcQ0.d5oszzRrxYHquU9Tcnk92fyWO',
 'admin'),
 
 ('Juan Pérez',
 'juan@edulogic.com',
-'$2b$12$ZCzQjUXCkGlYQgOypEhXI.Q2es/rGQOwaCsK8MjrB1CrAQUFtLXyS',
+'$2b$12$KIVRioMp8iwvMJBh.QxPrOGQrbNsWlltaFx1mICgMM4IyyMAvyaqu',
 'profesor'),
 
 ('Laura Gómez',
 'laura@edulogic.com',
-'$2b$12$GEMCMGhGFKgU6db9GltwheNye3v.ygfzquBqiNCKP2uPcfBnXtiUe',
+'$2b$12$PgxgK3Bnna7Wnhg3i4Thq.1Ai6JI6oBLXNfFH7BoH1oiAN4HGyKma',
 'profesor'),
 
 ('Carlos Rodríguez',
 'carlos@gmail.com',
-'$2b$12$zgzi2q2IKS6ONRm17Khe4u4fp9/KX0ywcPFM3UlJ2fcIgXOSGdCXu',
+'$2b$12$vmfsRbc1ecuE3/XMHb6BHeU8NU.vhvk1moLYXnE.GSn8UkyBBwkWO',
 'estudiante'),
 
 ('Ana Martínez',
 'ana@gmail.com',
-'$2b$12$qkO.VjR3AIyv5yzhLu3Ct.JNnH.PVfvl3hLzMHCvvnPorugTTjOxO',
+'$2b$12$ZrVbbWrv/DfkVMXAU9UGCuh7YF7/x5t37TwJNGLm5NE2nAIcDxnS.',
 'estudiante'),
 
 ('Luis Torres',
 'luis@gmail.com',
-'$2b$12$yUF5FPFqabJsApXN3EQ5heRikKj0.VtYyzq4h4txbs4heKBbmRfIu',
+'$2b$12$93pMcC8W6VCwkgCbECF.xetliUDb4lsyVGS.xIIyclBxKT56raT/m',
 'estudiante');
 
 --------------------------------------------------------
