@@ -28,7 +28,7 @@ Recompila los estilos automáticamente cada vez que guardas un archivo — no vu
 Para generar la versión final minificada (la usa el despliegue):
 
 ```bash
-npm run build
+- npm run build
 ```
 
 ## Ejecutar el proyecto
