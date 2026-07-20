@@ -2,7 +2,7 @@
 
 > **Documento vivo:** se actualiza durante todo el proyecto. Responsable de mantenerlo: **Harold Ernesto Aristizabal Martinez (Product Owner)**. Regla del equipo: al cerrar una issue grande (modelo, despliegue, pruebas), se actualiza la sección correspondiente esa misma semana.
 >
-> Estado de las secciones: ✅ completa · 🔄 en construcción · ✅ Aprobado
+> Estado de las secciones: ✅ completa · 🔄 en construcción · ⏳ Pendiente
 
 ---
 
