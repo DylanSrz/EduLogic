@@ -8,7 +8,8 @@
 
 [![Demo en vivo](https://img.shields.io/badge/demo-edulogic.pro-0d8ea5)](https://edulogic.pro)
 [![API](https://img.shields.io/badge/API-api.edulogic.pro-1f455e)](https://api.edulogic.pro/docs)
-[![Release](https://img.shields.io/badge/release-v0.4.0-e1442a)](../../releases)
+[![Release](https://img.shields.io/badge/release-v1.0.0-e1442a)](../../releases)
+[![CI](https://github.com/DylanSrz/EduLogic/actions/workflows/ci.yml/badge.svg)](https://github.com/DylanSrz/EduLogic/actions/workflows/ci.yml)
 
 </div>
 
@@ -73,6 +74,7 @@ La formación STEM es clave para el desarrollo económico —la OCDE proyecta qu
 | **HTML5 + Tailwind CSS v4 + JavaScript Vanilla** | SPA sin frameworks: dominio de los fundamentos del frontend |
 | **Render + Vercel** | Despliegue continuo desde GitHub: cada release actualiza producción |
 | **GitHub + GitHub Projects** | GitFlow con ramas protegidas y tablero Scrum con trazabilidad issue → rama → PR |
+| **pytest + GitHub Actions** | Pruebas del backend contra PostgreSQL real en cada push y PR |
 
 ## 🏗️ Arquitectura
 
@@ -129,6 +131,18 @@ Los datos semilla están en [database/semillas/](database/semillas/).
 
 </details>
 
+## 🧪 Pruebas
+
+Las pruebas cubren el motor de evaluación, la autenticación, los permisos por rol y la regla para completar lecciones. Corren contra un PostgreSQL real y se niegan a ejecutarse sobre una base que no sea local.
+
+```bash
+docker run -d --name edulogic-test -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=edulogic_test -p 55432:5432 postgres:17-alpine
+
+# Desde backend/, con el entorno virtual activo
+pip install -r requirements-dev.txt
+pytest
+```
+
 ## 📁 Estructura del proyecto
 
 ```
@@ -139,6 +153,7 @@ EduLogic/
 │       ├── services/   # Lógica de negocio (motor de evaluación, seguridad, progreso)
 │       ├── models/     # Tablas (SQLAlchemy)
 │       └── schemas/    # Validación de entrada/salida (Pydantic)
+│   └── tests/          # Pruebas con pytest
 ├── frontend/           # SPA: HTML + Tailwind + JS Vanilla con router por hash
 │   ├── js/vistas/      # Una vista por pantalla
 │   └── css/            # Sistema de diseño (entrada.css → estilos.css compilado)
