@@ -45,3 +45,7 @@ Desktop.ini
 *.tmp
 tmp/
 temp/
+
+# Bases de datos locales
+*.db
+*.sqlite3
